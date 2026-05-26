@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCG Gold Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#F0D080;--gold-d:#8B6914;
+  --black:#0A0A0A;--dark:#111;--dark2:#1A1A1A;--dark3:#222;
+  --white:#FAFAFA;--muted:#888;--green:#4CAF50;--red:#F44336;--blue:#6495ED;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--dark);color:var(--white);overflow:hidden}
+.layout{display:flex;height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:240px;min-width:240px;background:var(--dark2);border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-logo{padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.logo-box{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#000;flex-shrink:0}
+.logo-name{font-size:15px;font-weight:700;color:var(--gold-l);line-height:1}
+.logo-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.sidebar-section{padding:16px 12px 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:9px;margin:2px 8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:all .2s;border:none;background:transparent;width:calc(100% - 16px);text-align:left}
+.nav-item:hover{background:rgba(255,255,255,.05);color:var(--white)}
+.nav-item.active{background:rgba(201,168,76,.12);color:var(--gold-l)}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.sidebar-bottom{margin-top:auto;padding:12px;border-top:1px solid rgba(255,255,255,.06)}
+.live-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border-radius:9px;background:var(--green);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;transition:all .2s}
+.live-btn:hover{background:#3d8b40;transform:translateY(-1px)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;background:var(--dark2);flex-shrink:0}
+.page-title{font-size:18px;font-weight:600}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .2s;display:flex;align-items:center;gap:6px}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:#000}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.3)}
+.btn-outline{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.15)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-l)}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-sm{padding:6px 12px;font-size:11px}
+
+.content{flex:1;overflow-y:auto;padding:24px}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--dark2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px}
+.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.stat-val{font-size:24px;font-weight:700;margin-bottom:2px}
+.stat-lbl{font-size:11px;color:var(--muted)}
+.stat-gold .stat-icon{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2)}
+.stat-green .stat-icon{background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.2)}
+.stat-blue .stat-icon{background:rgba(100,149,237,.1);border:1px solid rgba(100,149,237,.2)}
+.stat-red .stat-icon{background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.2)}
+.stat-gold .stat-val{color:var(--gold-l)}
+.stat-green .stat-val{color:var(--green)}
+.stat-blue .stat-val{color:var(--blue)}
+
+/* CARDS */
+.card{background:var(--dark2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;margin-bottom:18px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.card-title{font-size:15px;font-weight:600}
+
+/* FORMULA BANNER */
+.formula-banner{display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:11px;margin-bottom:20px;flex-wrap:wrap}
+.ftag{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700}
+.ft-buy{background:rgba(255,255,255,.08);color:var(--white)}
+.ft-margin{background:rgba(76,175,80,.12);color:var(--green)}
+.ft-del{background:rgba(100,149,237,.12);color:var(--blue)}
+.ft-result{background:rgba(201,168,76,.15);color:var(--gold-l)}
+.ft-plus{color:var(--gold-l);font-weight:700}
+
+/* PRICE TABLE */
+.price-table{width:100%;border-collapse:collapse}
+.price-table th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06)}
+.price-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;vertical-align:middle}
+.price-table tr:last-child td{border-bottom:none}
+.price-table tr:hover td{background:rgba(255,255,255,.02)}
+.buy-inp{background:var(--dark3);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:var(--white);font-size:13px;font-family:'Outfit',sans-serif;padding:6px 10px;width:110px;outline:none}
+.buy-inp:focus{border-color:var(--gold)}
+.sell-price{font-family:'Outfit',serif;font-size:14px;font-weight:700;color:var(--gold-l)}
+.profit-badge{background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.2);color:var(--green);padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700}
+.type-badge{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.tb-micro{background:rgba(156,39,176,.1);color:#CE93D8;border:1px solid rgba(156,39,176,.2)}
+.tb-gold{background:rgba(201,168,76,.1);color:var(--gold-l);border:1px solid rgba(201,168,76,.2)}
+.tb-premium{background:rgba(100,149,237,.1);color:var(--blue);border:1px solid rgba(100,149,237,.2)}
+.tb-silver{background:rgba(168,169,173,.1);color:#D4D5D9;border:1px solid rgba(168,169,173,.2)}
+
+/* SETTINGS FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.form-input,.form-select,.form-textarea{background:var(--dark3);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:var(--white);font-size:13px;font-family:'Outfit',sans-serif;padding:10px 12px;outline:none;transition:border-color .2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold)}
+.form-select option{background:var(--dark3)}
+.form-textarea{height:90px;resize:vertical}
+.form-hint{font-size:11px;color:var(--muted);margin-top:2px}
+.section-divider{height:1px;background:rgba(255,255,255,.06);margin:20px 0}
+.section-label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+
+/* BANNER MANAGER */
+.banner-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.banner-card{background:var(--dark3);border:1px solid rgba(255,255,255,.06);border-radius:11px;overflow:hidden}
+.banner-preview{height:100px;background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);position:relative}
+.banner-active-badge{position:absolute;top:8px;right:8px;background:var(--green);color:#fff;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700}
+.banner-body{padding:12px}
+.banner-name{font-size:13px;font-weight:600;margin-bottom:6px}
+.banner-actions{display:flex;gap:7px}
+
+/* TOGGLE */
+.toggle{position:relative;display:inline-block;width:42px;height:24px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--dark3);border-radius:12px;transition:.3s;border:1px solid rgba(255,255,255,.1)}
+.toggle-slider:before{content:'';position:absolute;height:18px;width:18px;left:2px;bottom:2px;background:var(--muted);border-radius:50%;transition:.3s}
+.toggle input:checked + .toggle-slider{background:rgba(76,175,80,.2);border-color:var(--green)}
+.toggle input:checked + .toggle-slider:before{transform:translateX(18px);background:var(--green)}
+
+/* TESTIMONIALS */
+.testimonial-card{background:var(--dark3);border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:14px;margin-bottom:10px}
+.test-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.test-author{display:flex;align-items:center;gap:9px}
+.test-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#000}
+.test-name{font-size:13px;font-weight:600}
+.test-loc{font-size:10px;color:var(--muted)}
+.test-text{font-size:12px;color:var(--muted);line-height:1.6;font-style:italic}
+.stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:6px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark2);border:1px solid rgba(201,168,76,.3);color:var(--white);padding:12px 20px;border-radius:10px;font-size:13px;z-index:9999;transform:translateY(80px);transition:transform .3s;display:flex;align-items:center;gap:8px}
+.toast.show{transform:translateY(0)}
+.toast.success{border-color:rgba(76,175,80,.4)}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--dark2);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px;width:90%;max-width:480px;position:relative}
+.modal-title{font-size:17px;font-weight:700;margin-bottom:18px;color:var(--gold-l)}
+.modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.05);border:none;color:var(--muted);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(255,255,255,.1);color:var(--white)}
+
+/* WHATSAPP SETUP */
+.wa-preview{background:var(--dark3);border-radius:11px;padding:16px;margin-top:14px}
+.wa-preview-msg{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.2);border-radius:9px;padding:12px;font-size:12px;color:var(--muted);line-height:1.7;white-space:pre-wrap}
+.wa-number-display{font-size:22px;font-weight:700;color:var(--green);text-align:center;padding:16px;background:rgba(76,175,80,.08);border-radius:10px;border:1px solid rgba(76,175,80,.2);margin-bottom:14px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--dark3);border-radius:2px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{width:60px;min-width:60px}
+  .logo-name,.logo-sub,.nav-item span,.sidebar-section{display:none}
+  .nav-item{justify-content:center;padding:10px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .banner-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-box">QCG</div>
+    <div>
+      <div class="logo-name">QCG Gold</div>
+      <div class="logo-sub">Admin Panel</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">Main</div>
+  <button class="nav-item active" onclick="showPage('dashboard',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <span>Dashboard</span>
+  </button>
+
+  <div class="sidebar-section">Products</div>
+  <button class="nav-item" onclick="showPage('prices',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M6 12h12"/></svg>
+    <span>Update Prices</span>
+  </button>
+  <button class="nav-item" onclick="showPage('products',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+    <span>Gold & Silver Coins</span>
+  </button>
+
+  <div class="sidebar-section">Content</div>
+  <button class="nav-item" onclick="showPage('banner',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+    <span>Banner & Images</span>
+  </button>
+  <button class="nav-item" onclick="showPage('testimonials',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span>Testimonials</span>
+  </button>
+
+  <div class="sidebar-section">Settings</div>
+  <button class="nav-item" onclick="showPage('whatsapp',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 5.69C2.99 4.6 3.8 3.64 4.87 3.5H7.88a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 11.3a16 16 0 006.61 6.61l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2z"/></svg>
+    <span>WhatsApp Setup</span>
+  </button>
+  <button class="nav-item" onclick="showPage('settings',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <span>Site Settings</span>
+  </button>
+
+  <div class="sidebar-bottom">
+    <a href="index.html" target="_blank" class="live-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+      Live Website
+    </a>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">Dashboard</div>
+    <div class="topbar-actions">
+      <div style="font-size:12px;color:var(--muted)" id="topbarInfo">QCG Gold Admin</div>
+      <button class="btn btn-gold" onclick="saveAll()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save Changes
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card stat-gold">
+          <div class="stat-icon">🪙</div>
+          <div class="stat-val" id="dash-products">17</div>
+          <div class="stat-lbl">Total Products</div>
+        </div>
+        <div class="stat-card stat-green">
+          <div class="stat-icon">💰</div>
+          <div class="stat-val">₹250</div>
+          <div class="stat-lbl">Your Margin/Coin</div>
+        </div>
+        <div class="stat-card stat-blue">
+          <div class="stat-icon">🚚</div>
+          <div class="stat-val">₹150</div>
+          <div class="stat-lbl">Delivery Charge</div>
+        </div>
+        <div class="stat-card stat-gold">
+          <div class="stat-icon">📱</div>
+          <div class="stat-val" id="dash-wa" style="font-size:14px">Not Set</div>
+          <div class="stat-lbl">WhatsApp Number</div>
+        </div>
+      </div>
+
+      
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Quick Actions</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="showPage('prices',document.querySelector('[onclick*=prices]'))">🪙 Update Gold Prices</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="showPage('whatsapp',document.querySelector('[onclick*=whatsapp]'))">📱 WhatsApp Setup</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="showPage('banner',document.querySelector('[onclick*=banner]'))">🖼️ Change Banner</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="showPage('testimonials',document.querySelector('[onclick*=testimonials]'))">⭐ Add Review</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Current Prices (Top 5)</div></div>
+          <table style="width:100%;font-size:12px;border-collapse:collapse">
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:7px 0;color:var(--muted)">50mg Micro</td><td style="text-align:right;font-weight:700;color:var(--gold-l)" id="dash-50mg">₹1,364</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:7px 0;color:var(--muted)">100mg Micro</td><td style="text-align:right;font-weight:700;color:var(--gold-l)" id="dash-100mg">₹2,174</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:7px 0;color:var(--muted)">0.5g Coin</td><td style="text-align:right;font-weight:700;color:var(--gold-l)" id="dash-05g">₹8,334</td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:7px 0;color:var(--muted)">1g Coin ⭐</td><td style="text-align:right;font-weight:700;color:var(--gold-l)" id="dash-1g">₹16,165</td></tr>
+            <tr><td style="padding:7px 0;color:var(--muted)">2g Coin</td><td style="text-align:right;font-weight:700;color:var(--gold-l)" id="dash-2g">₹33,071</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICES PAGE -->
+    <div class="page" id="page-prices">
+      
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Elite Gold Buy Prices</div>
+          <div style="font-size:11px;color:var(--muted)">Update every week from Elite Gold app</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="price-table" id="priceTable">
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Type</th>
+                <th>Elite Buy Price</th>
+                <th>+₹250 Margin</th>
+                <th>+₹150 Delivery</th>
+                <th>Your Sell Price</th>
+                <th>Your Profit</th>
+              </tr>
+            </thead>
+            <tbody id="priceTableBody"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px">
+          <button class="btn btn-gold" onclick="savePrices()">💾 Save All Prices</button>
+          <button class="btn btn-outline" onclick="resetPrices()">↩️ Reset to Default</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS PAGE -->
+    <div class="page" id="page-products">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Gold & Silver Coins</div>
+          <button class="btn btn-gold btn-sm" onclick="openAddProduct()">+ Add Product</button>
+        </div>
+        <div id="productsList"></div>
+      </div>
+    </div>
+
+    <!-- BANNER PAGE -->
+    <div class="page" id="page-banner">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Website Ticker / Announcement</div></div>
+        <div class="form-group" style="margin-bottom:14px">
+          <label>Ticker Message</label>
+          <input type="text" class="form-input" id="tickerMsg" value="🪙 50mg Gold ₹1,364 • 🪙 100mg Gold ₹2,174 • 🪙 1g Gold ₹16,165 • ✅ Buy Price + ₹250 + ₹150 Delivery • 🔄 Buyback Guaranteed • 💰 Gold SIP from ₹10/day">
+          <div class="form-hint">This scrolls across the top of your website</div>
+        </div>
+        <button class="btn btn-gold" onclick="saveBanner()">💾 Save Ticker</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Hero Section Text</div></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Main Headline</label>
+            <input type="text" class="form-input" id="heroTitle" value="India's Smallest Gold Coins Delivered Fast">
+          </div>
+          <div class="form-group">
+            <label>Sub Headline</label>
+            <input type="text" class="form-input" id="heroSub" value="From just ₹1,364 — pure 999 Elite Gold coins from 50mg">
+          </div>
+          <div class="form-group">
+            <label>Badge Text</label>
+            <input type="text" class="form-input" id="heroBadge" value="100% Transparent Pricing">
+          </div>
+          <div class="form-group">
+            <label>Button 1 Text</label>
+            <input type="text" class="form-input" id="heroBtn1" value="🪙 Shop All Coins">
+          </div>
+        </div>
+        <button class="btn btn-gold" style="margin-top:14px" onclick="saveHero()">💾 Save Hero Section</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Stats Bar</div></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Stat 1 Number</label>
+            <input type="text" class="form-input" id="stat1num" value="50mg">
+          </div>
+          <div class="form-group">
+            <label>Stat 1 Label</label>
+            <input type="text" class="form-input" id="stat1lbl" value="Smallest Coin">
+          </div>
+          <div class="form-group">
+            <label>Stat 2 Number</label>
+            <input type="text" class="form-input" id="stat2num" value="₹250">
+          </div>
+          <div class="form-group">
+            <label>Stat 2 Label</label>
+            <input type="text" class="form-input" id="stat2lbl" value="Fixed Margin">
+          </div>
+          <div class="form-group">
+            <label>Stat 3 Number</label>
+            <input type="text" class="form-input" id="stat3num" value="₹150">
+          </div>
+          <div class="form-group">
+            <label>Stat 3 Label</label>
+            <input type="text" class="form-input" id="stat3lbl" value="Fixed Delivery">
+          </div>
+        </div>
+        <button class="btn btn-gold" style="margin-top:14px" onclick="saveStats()">💾 Save Stats</button>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS PAGE -->
+    <div class="page" id="page-testimonials">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Customer Reviews</div>
+          <button class="btn btn-gold btn-sm" onclick="openAddReview()">+ Add Review</button>
+        </div>
+        <div id="testimonialsList"></div>
+      </div>
+    </div>
+
+    <!-- WHATSAPP PAGE -->
+    <div class="page" id="page-whatsapp">
+      <div class="card">
+        <div class="card-header"><div class="card-title">WhatsApp Business Setup</div></div>
+        <div class="section-label">Your WhatsApp Number</div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>Phone Number (with country code)</label>
+          <input type="text" class="form-input" id="waNumber" placeholder="919820001234" style="font-size:18px;font-weight:700">
+          <div class="form-hint">Enter 91 + your 10 digit number. Example: 919820001234</div>
+        </div>
+        <div class="wa-number-display" id="waDisplay">No number set</div>
+
+        <div class="section-label">Order Message Template</div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>Auto Message When Customer Clicks Order</label>
+          <textarea class="form-textarea" id="waMsg" style="height:120px">Hi QCG Gold! I want to order:
+• Product: [PRODUCT]
+• Quantity: [QTY] coin(s)
+• Total: [TOTAL]
+Please confirm price and share UPI details!</textarea>
+        </div>
+
+        <div class="wa-preview">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">Preview — What Customer Sees on WhatsApp</div>
+          <div class="wa-preview-msg" id="waPreview">Hi QCG Gold! I want to order:
+• Product: 1g Gold Coin
+• Quantity: 1 coin(s)
+• Total: ₹16,165
+Please confirm price and share UPI details!</div>
+        </div>
+        <button class="btn btn-green" style="margin-top:16px;width:100%;justify-content:center" onclick="saveWhatsApp()">💾 Save WhatsApp Settings</button>
+        <div style="margin-top:12px">
+          <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="testWhatsApp()">📱 Test WhatsApp Link</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div class="page" id="page-settings">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Business Information</div></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Business Name</label>
+            <input type="text" class="form-input" id="bizName" value="QCG Gold">
+          </div>
+          <div class="form-group">
+            <label>Tagline</label>
+            <input type="text" class="form-input" id="bizTagline" value="Click Karo. Sona Pao.">
+          </div>
+          <div class="form-group">
+            <label>Instagram Handle</label>
+            <input type="text" class="form-input" id="igHandle" placeholder="@qcggold">
+          </div>
+          <div class="form-group">
+            <label>City / Location</label>
+            <input type="text" class="form-input" id="bizCity" value="Mumbai, India">
+          </div>
+          <div class="form-group">
+            <label>Business Hours</label>
+            <input type="text" class="form-input" id="bizHours" value="9 AM – 9 PM Daily">
+          </div>
+          <div class="form-group">
+            <label>GST Number</label>
+            <input type="text" class="form-input" id="gstNum" placeholder="27XXXXX1234X1Z5">
+          </div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="section-label">Pricing Settings</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Your Margin Per Coin (₹)</label>
+            <input type="number" class="form-input" id="marginAmt" value="250">
+            <div class="form-hint">Your profit per coin sold</div>
+          </div>
+          <div class="form-group">
+            <label>Delivery Charge (₹)</label>
+            <input type="number" class="form-input" id="deliveryAmt" value="150">
+            <div class="form-hint">Flat delivery fee per order</div>
+          </div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="section-label">Feature Toggles</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--dark3);border-radius:10px">
+            <div><div style="font-size:13px;font-weight:600">Gold Save (SIP Feature)</div><div style="font-size:11px;color:var(--muted)">Like PhonePe Gold savings</div></div>
+            <label class="toggle"><input type="checkbox" id="toggle-sip" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--dark3);border-radius:10px">
+            <div><div style="font-size:13px;font-weight:600">Price Calculator</div><div style="font-size:11px;color:var(--muted)">Show calculator on website</div></div>
+            <label class="toggle"><input type="checkbox" id="toggle-calc" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--dark3);border-radius:10px">
+            <div><div style="font-size:13px;font-weight:600">Show Buy Price on Cards</div><div style="font-size:11px;color:var(--muted)">Shows Elite buy price tag on products</div></div>
+            <label class="toggle"><input type="checkbox" id="toggle-buyshow" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--dark3);border-radius:10px">
+            <div><div style="font-size:13px;font-weight:600">Show Profit Badge</div><div style="font-size:11px;color:var(--muted)">Shows "Profit ₹250" on product cards</div></div>
+            <label class="toggle"><input type="checkbox" id="toggle-profit" checked><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="saveSettings()">💾 Save Settings</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">How to Update Website After Changes</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--dark3);border-radius:10px;padding:14px;font-size:12px;line-height:1.7;color:var(--muted)">
+            <strong style="color:var(--white)">Step 1:</strong> Make all your changes in this Admin Panel<br>
+            <strong style="color:var(--white)">Step 2:</strong> Click "Generate Updated Files" button below<br>
+            <strong style="color:var(--white)">Step 3:</strong> Download the updated prices.js file<br>
+            <strong style="color:var(--white)">Step 4:</strong> Upload prices.js to GitHub (replace old file)<br>
+            <strong style="color:var(--white)">Step 5:</strong> Website updates in 2 minutes automatically ✅
+          </div>
+          <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="generateFiles()">📥 Generate Updated prices.js</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ADD REVIEW MODAL -->
+<div class="modal-bg" id="reviewModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+    <div class="modal-title">Add Customer Review</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" class="form-input" id="rev-name" placeholder="Priya Mehta">
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" class="form-input" id="rev-loc" placeholder="Mumbai, Maharashtra">
+      </div>
+      <div class="form-group">
+        <label>Rating</label>
+        <select class="form-select" id="rev-stars">
+          <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+          <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+          <option value="3">⭐⭐⭐ 3 Stars</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Review Text</label>
+        <textarea class="form-textarea" id="rev-text" placeholder="Write the customer review..."></textarea>
+      </div>
+      <button class="btn btn-gold" onclick="addReview()">✅ Add Review</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal-bg" id="productModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    <div class="modal-title">Add New Product</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" class="form-input" id="prod-name" placeholder="1g Gold Coin">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select class="form-select" id="prod-type">
+          <option value="micro">Micro Coin</option>
+          <option value="gold">Gold Coin</option>
+          <option value="premium">Premium Coin</option>
+          <option value="silver">Silver Coin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Elite Gold Buy Price (₹)</label>
+        <input type="number" class="form-input" id="prod-price" placeholder="15765">
+      </div>
+      <div class="form-group">
+        <label>Purity</label>
+        <input type="text" class="form-input" id="prod-purity" placeholder="999" value="999">
+      </div>
+      <button class="btn btn-gold" onclick="addProduct()">✅ Add Product</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastMsg">Saved successfully!</span>
+</div>
+
+<script>
+// ═══════════════════════════════
+// STATE — all your data
+// ═══════════════════════════════
+const MARGIN = 250;
+const DELIVERY = 150;
+
+let state = {
+  waNumber: localStorage.getItem('qcg_wa') || '',
+  prices: JSON.parse(localStorage.getItem('qcg_prices') || 'null') || [
+    {id:'50mg',  label:'50mg Micro Gold',   buy:964,    type:'micro',   purity:'999'},
+    {id:'100mg', label:'100mg Micro Gold',  buy:1774,   type:'micro',   purity:'999'},
+    {id:'200mg', label:'200mg Micro Gold',  buy:3368,   type:'micro',   purity:'999'},
+    {id:'05g',   label:'0.5g Gold Coin',    buy:7934,   type:'gold',    purity:'999'},
+    {id:'05gp',  label:'0.5g Premium Coin', buy:8155,   type:'premium', purity:'999'},
+    {id:'1g',    label:'1g Gold Coin',      buy:15765,  type:'gold',    purity:'999'},
+    {id:'1gp',   label:'1g Premium Coin',   buy:16017,  type:'premium', purity:'999'},
+    {id:'2g',    label:'2g Gold Coin',      buy:32671,  type:'gold',    purity:'999'},
+    {id:'4g',    label:'4g Gold Coin',      buy:65271,  type:'gold',    purity:'999'},
+    {id:'5g',    label:'5g Gold Coin',      buy:81519,  type:'gold',    purity:'999'},
+    {id:'8g',    label:'8g Gold Coin',      buy:130407, type:'gold',    purity:'999'},
+    {id:'10g',   label:'10g Gold Coin',     buy:162966, type:'gold',    purity:'999'},
+    {id:'20g',   label:'20g Gold Coin',     buy:325735, type:'gold',    purity:'999'},
+    {id:'50g',   label:'50g Gold Coin',     buy:813963, type:'gold',    purity:'999'},
+    {id:'s5g',   label:'5g Silver Coin',    buy:430,    type:'silver',  purity:'999'},
+    {id:'s10g',  label:'10g Silver Coin',   buy:880,    type:'silver',  purity:'999'},
+    {id:'s50g',  label:'50g Silver Coin',   buy:4350,   type:'silver',  purity:'999'},
+  ],
+  reviews: JSON.parse(localStorage.getItem('qcg_reviews') || 'null') || [
+    {name:'Priya Mehta',    loc:'Mumbai, Maharashtra',  stars:5, text:'"Ordered 100 coins of 100mg for wedding return gifts. Stunning packaging. Love the transparent pricing!"'},
+    {name:'Ramesh Kumar',   loc:'Ahmedabad, Gujarat',   stars:5, text:'"First time buying gold online. Love that they show exact buy price + ₹250 + ₹150. So honest!"'},
+    {name:'Suresh Patel',   loc:'Pune, Maharashtra',    stars:5, text:'"Gold SIP feature is amazing! Saving ₹500/month. Already accumulated enough for a coin!"'},
+  ]
+};
+
+// ═══════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════
+const pageTitles = {
+  dashboard:'Dashboard', prices:'Update Prices', products:'Gold & Silver Coins',
+  banner:'Banner & Images', testimonials:'Customer Reviews',
+  whatsapp:'WhatsApp Setup', settings:'Site Settings'
+};
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  document.getElementById('pageTitle').textContent = pageTitles[id] || id;
+  if(id==='prices') renderPriceTable();
+  if(id==='products') renderProducts();
+  if(id==='testimonials') renderTestimonials();
+  if(id==='whatsapp') loadWAPage();
+  if(id==='dashboard') updateDashboard();
+}
+
+// ═══════════════════════════════
+// PRICE TABLE
+// ═══════════════════════════════
+function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+
+function renderPriceTable() {
+  const tbody = document.getElementById('priceTableBody');
+  tbody.innerHTML = state.prices.map((p,i) => {
+    const sell = p.buy + MARGIN + DELIVERY;
+    const typeBadge = {micro:'tb-micro',gold:'tb-gold',premium:'tb-premium',silver:'tb-silver'}[p.type]||'tb-gold';
+    return `<tr>
+      <td><strong>${p.label}</strong></td>
+      <td><span class="type-badge ${typeBadge}">${p.type}</span></td>
+      <td><input type="number" class="buy-inp" value="${p.buy}" onchange="updatePrice(${i},this.value)" oninput="updatePrice(${i},this.value)" id="price-inp-${i}"></td>
+      <td style="color:var(--green);font-weight:700">+₹250</td>
+      <td style="color:var(--blue);font-weight:700">+₹150</td>
+      <td><span class="sell-price" id="sell-${i}">${fmt(sell)}</span></td>
+      <td><span class="profit-badge">₹250</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function updatePrice(i, val) {
+  const v = parseInt(val) || 0;
+  state.prices[i].buy = v;
+  const sell = v + MARGIN + DELIVERY;
+  const el = document.getElementById('sell-'+i);
+  if(el) el.textContent = fmt(sell);
+  updateDashboard();
+}
+
+function savePrices() {
+  localStorage.setItem('qcg_prices', JSON.stringify(state.prices));
+  updateDashboard();
+  toast('✅ Prices saved! Now generate files and upload to GitHub.', 'success');
+}
+
+function resetPrices() {
+  if(confirm('Reset all prices to default Elite Gold rates?')) {
+    localStorage.removeItem('qcg_prices');
+    location.reload();
+  }
+}
+
+// ═══════════════════════════════
+// PRODUCTS
+// ═══════════════════════════════
+function renderProducts() {
+  const el = document.getElementById('productsList');
+  el.innerHTML = state.prices.map((p,i) => {
+    const sell = p.buy + MARGIN + DELIVERY;
+    const typeBadge = {micro:'tb-micro',gold:'tb-gold',premium:'tb-premium',silver:'tb-silver'}[p.type]||'tb-gold';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F5E070,#C9A84C,#7A5C0F);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,.75);flex-shrink:0">${p.label.split(' ')[0]}</div>
+        <div>
+          <div style="font-size:13px;font-weight:600">${p.label}</div>
+          <div style="font-size:11px;color:var(--muted)">${p.purity} Purity · <span class="type-badge ${typeBadge}" style="padding:1px 6px;font-size:9px">${p.type}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:700;color:var(--gold-l)">${fmt(sell)}</div>
+          <div style="font-size:10px;color:var(--muted)">Buy ${fmt(p.buy)}</div>
+        </div>
+        <button class="btn btn-red btn-sm" onclick="deleteProduct(${i})">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openAddProduct() { document.getElementById('productModal').classList.add('open'); }
+
+function addProduct() {
+  const name = document.getElementById('prod-name').value.trim();
+  const type = document.getElementById('prod-type').value;
+  const buy = parseInt(document.getElementById('prod-price').value) || 0;
+  const purity = document.getElementById('prod-purity').value || '999';
+  if(!name || !buy){ toast('⚠️ Please fill all fields'); return; }
+  state.prices.push({id:'custom_'+Date.now(),label:name,buy,type,purity});
+  closeModal('productModal');
+  renderProducts();
+  toast('✅ Product added!', 'success');
+}
+
+function deleteProduct(i) {
+  if(confirm('Delete '+state.prices[i].label+'?')) {
+    state.prices.splice(i,1);
+    renderProducts();
+    toast('🗑️ Product deleted');
+  }
+}
+
+// ═══════════════════════════════
+// TESTIMONIALS
+// ═══════════════════════════════
+function renderTestimonials() {
+  const el = document.getElementById('testimonialsList');
+  el.innerHTML = state.reviews.map((r,i) => `
+    <div class="testimonial-card">
+      <div class="test-header">
+        <div class="test-author">
+          <div class="test-avatar">${r.name.charAt(0)}</div>
+          <div>
+            <div class="test-name">${r.name}</div>
+            <div class="test-loc">${r.loc}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="profit-badge">${r.stars}★</span>
+          <button class="btn btn-red btn-sm" onclick="deleteReview(${i})">🗑️</button>
+        </div>
+      </div>
+      <div class="stars">${'★'.repeat(r.stars)}</div>
+      <div class="test-text">${r.text}</div>
+    </div>
+  `).join('');
+}
+
+function openAddReview() { document.getElementById('reviewModal').classList.add('open'); }
+
+function addReview() {
+  const name = document.getElementById('rev-name').value.trim();
+  const loc = document.getElementById('rev-loc').value.trim();
+  const stars = parseInt(document.getElementById('rev-stars').value);
+  const text = '"' + document.getElementById('rev-text').value.trim() + '"';
+  if(!name || !text){ toast('⚠️ Please fill all fields'); return; }
+  state.reviews.push({name,loc,stars,text});
+  localStorage.setItem('qcg_reviews', JSON.stringify(state.reviews));
+  closeModal('reviewModal');
+  renderTestimonials();
+  toast('✅ Review added!', 'success');
+}
+
+function deleteReview(i) {
+  state.reviews.splice(i,1);
+  localStorage.setItem('qcg_reviews', JSON.stringify(state.reviews));
+  renderTestimonials();
+  toast('🗑️ Review deleted');
+}
+
+// ═══════════════════════════════
+// WHATSAPP
+// ═══════════════════════════════
+function loadWAPage() {
+  const saved = localStorage.getItem('qcg_wa') || '';
+  document.getElementById('waNumber').value = saved;
+  updateWADisplay();
+}
+
+function updateWADisplay() {
+  const num = document.getElementById('waNumber').value;
+  document.getElementById('waDisplay').textContent = num ? '+' + num : 'No number set';
+}
+
+document.addEventListener('input', e => {
+  if(e.target.id === 'waNumber') updateWADisplay();
+});
+
+function saveWhatsApp() {
+  const num = document.getElementById('waNumber').value.trim();
+  if(!num){ toast('⚠️ Enter your WhatsApp number'); return; }
+  localStorage.setItem('qcg_wa', num);
+  state.waNumber = num;
+  updateDashboard();
+  toast('✅ WhatsApp number saved!', 'success');
+}
+
+function testWhatsApp() {
+  const num = document.getElementById('waNumber').value || '919999999999';
+  window.open('https://wa.me/'+num+'?text=Hi+QCG+Gold!+Testing+your+WhatsApp+link.', '_blank');
+}
+
+// ═══════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════
+function updateDashboard() {
+  const waNum = localStorage.getItem('qcg_wa') || '';
+  const waEl = document.getElementById('dash-wa');
+  if(waEl) waEl.textContent = waNum ? '+'+waNum.slice(-10) : 'Not Set';
+
+  const priceMap = {'50mg':'dash-50mg','100mg':'dash-100mg'};
+  const p05 = state.prices.find(p=>p.id==='05g');
+  const p1 = state.prices.find(p=>p.id==='1g');
+  const p2 = state.prices.find(p=>p.id==='2g');
+  const p50 = state.prices.find(p=>p.id==='50mg');
+  const p100 = state.prices.find(p=>p.id==='100mg');
+
+  if(p50) setEl('dash-50mg', fmt(p50.buy+400));
+  if(p100) setEl('dash-100mg', fmt(p100.buy+400));
+  if(p05) setEl('dash-05g', fmt(p05.buy+400));
+  if(p1) setEl('dash-1g', fmt(p1.buy+400));
+  if(p2) setEl('dash-2g', fmt(p2.buy+400));
+  setEl('dash-products', state.prices.length);
+}
+
+// ═══════════════════════════════
+// SAVE FUNCTIONS
+// ═══════════════════════════════
+function saveBanner() {
+  localStorage.setItem('qcg_ticker', document.getElementById('tickerMsg').value);
+  localStorage.setItem('qcg_hero_title', document.getElementById('heroTitle').value);
+  localStorage.setItem('qcg_hero_sub', document.getElementById('heroSub').value);
+  toast('✅ Banner content saved!', 'success');
+}
+
+function saveHero() { saveBanner(); }
+function saveStats() {
+  ['stat1num','stat1lbl','stat2num','stat2lbl','stat3num','stat3lbl'].forEach(id => {
+    localStorage.setItem('qcg_'+id, document.getElementById(id).value);
+  });
+  toast('✅ Stats saved!', 'success');
+}
+
+function saveSettings() {
+  ['bizName','bizTagline','igHandle','bizCity','bizHours','gstNum','marginAmt','deliveryAmt'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) localStorage.setItem('qcg_'+id, el.value);
+  });
+  toast('✅ Settings saved!', 'success');
+}
+
+function saveAll() {
+  savePrices();
+  localStorage.setItem('qcg_reviews', JSON.stringify(state.reviews));
+  toast('✅ All changes saved!', 'success');
+}
+
+// ═══════════════════════════════
+// GENERATE FILES
+// ═══════════════════════════════
+function generateFiles() {
+  const margin = parseInt(document.getElementById('marginAmt')?.value) || 250;
+  const delivery = parseInt(document.getElementById('deliveryAmt')?.value) || 150;
+  const waNum = localStorage.getItem('qcg_wa') || '919999999999';
+  const igHandle = localStorage.getItem('qcg_igHandle') || '@qcggold';
+  const bizName = localStorage.getItem('qcg_bizName') || 'QCG Gold';
+  const ticker = localStorage.getItem('qcg_ticker') || '';
+
+  let content = `/* ═══════════════════════════════════════════════
+   ${bizName} — PRICE DATA FILE
+   Auto-generated from Admin Panel
+   Last updated: ${new Date().toLocaleDateString('en-IN')}
+   Formula: Buy Price + ₹${margin} Margin + ₹${delivery} Delivery = Sell Price
+═══════════════════════════════════════════════ */
+
+const MARGIN = ${margin};
+const DELIVERY = ${delivery};
+const TOTAL_ADD = MARGIN + DELIVERY;
+const WA_NUMBER = '${waNum}';
+const IG_HANDLE = '${igHandle}';
+const BIZ_NAME = '${bizName}';
+
+const ELITE_GOLD_PRICES = [
+${state.prices.map(p => `  { id: '${p.id}', buy: ${p.buy}, label: '${p.label}', type: '${p.type}', purity: '${p.purity}' },`).join('\n')}
+];
+
+const REVIEWS = ${JSON.stringify(state.reviews, null, 2)};
+
+function getSellPrice(id) {
+  const p = ELITE_GOLD_PRICES.find(x => x.id === id);
+  return p ? p.buy + TOTAL_ADD : 0;
+}
+function getProduct(id) { return ELITE_GOLD_PRICES.find(x => x.id === id); }
+function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function fmtNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+
+const SIP_MILESTONES = [
+${state.prices.slice(0,7).map(p => `  { price: ${p.buy + TOTAL_ADD}, label: '${p.label.split(' ')[0]}', icon: '🪙' },`).join('\n')}
+];
+
+console.log('✅ ${bizName} prices loaded — ${state.prices.length} products');
+`;
+
+  const blob = new Blob([content], {type:'text/javascript'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'prices.js';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📥 prices.js downloaded! Upload to GitHub to update website.', 'success');
+}
+
+// ═══════════════════════════════
+// MODAL
+// ═══════════════════════════════
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-bg').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); });
+});
+
+// ═══════════════════════════════
+// TOAST
+// ═══════════════════════════════
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  const m = document.getElementById('toastMsg');
+  m.textContent = msg;
+  t.className = 'toast show' + (type==='success'?' success':'');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function setEl(id, val) {
+  const el = document.getElementById(id);
+  if(el) el.textContent = val;
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+updateDashboard();
+
+// Load saved settings
+['bizName','bizTagline','igHandle','bizCity','bizHours','gstNum','marginAmt','deliveryAmt','tickerMsg','heroTitle','heroSub','stat1num','stat1lbl','stat2num','stat2lbl','stat3num','stat3lbl'].forEach(id => {
+  const saved = localStorage.getItem('qcg_'+id);
+  const el = document.getElementById(id);
+  if(saved && el) el.value = saved;
+});
+</script>
+</body>
+</html>
