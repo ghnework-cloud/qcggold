@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCG Gold — Pure Gold & Silver Coins</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="logo">
+    <div class="logo-box">QCG</div>
+    <div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="goldsave.html">Gold Save</a></li>
+    <li><a href="calculator.html">Calculator</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><div class="rate-pill"><div class="ldot"></div>1g Gold: <strong>₹16,165</strong></div></li>
+    <li><a href="https://wa.me/919999999999?text=Hi QCG Gold! I want to order." class="nav-cta" target="_blank">Order Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">🏠 Home</a>
+  <a href="shop.html">🪙 Shop Coins</a>
+  <a href="goldsave.html">💰 Gold Save SIP</a>
+  <a href="calculator.html">🧮 Price Calculator</a>
+  <a href="about.html">ℹ️ About Us</a>
+  <a href="https://wa.me/919999999999" target="_blank" style="background:#25D366;color:white;border-radius:8px;text-align:center">💬 WhatsApp Order</a>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ti">🪙 50mg Gold ₹1,364</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🪙 100mg Gold ₹2,174</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🪙 1g Gold ₹16,165</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">✅ Buy Price + ₹250 + ₹150 Delivery</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🔄 Buyback Available</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">💰 Gold SIP from ₹10/day</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">📦 50mg to 50g • No Min Order</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🪙 50mg Gold ₹1,364</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🪙 100mg Gold ₹2,174</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🪙 1g Gold ₹16,165</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">✅ Buy Price + ₹250 + ₹150 Delivery</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">🔄 Buyback Available</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">💰 Gold SIP from ₹10/day</div><div class="ti"><span class="tdot"></span></div>
+    <div class="ti">📦 50mg to 50g • No Min Order</div><div class="ti"><span class="tdot"></span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hgrid"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge"><div class="ldot"></div>100% Transparent Pricing</div>
+      <h1 class="hero-title">India's Smallest<br><span class="grad">Gold Coins</span><br>Delivered Fast</h1>
+      <p class="hero-sub"><strong>From just ₹1,364</strong> — pure 999 Elite Gold coins from 50mg. Fixed ₹250 margin. Fixed ₹150 delivery. Zero hidden charges. Ever.</p>
+      <div class="hero-btns">
+        <a href="shop.html" class="btn-p">🪙 Shop All Coins</a>
+        <a href="goldsave.html" class="btn-o">💰 Start Gold SIP</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="snum">50mg</div><div class="slbl">Smallest Coin</div></div>
+        <div><div class="snum">₹250</div><div class="slbl">Fixed Margin</div></div>
+        <div><div class="snum">₹150</div><div class="slbl">Fixed Delivery</div></div>
+        <div><div class="snum">0 MOQ</div><div class="slbl">No Min Order</div></div>
+      </div>
+    </div>
+
+    <!-- PRICING CARD -->
+    <div class="rcard">
+      <div class="rcard-hdr">
+        <span class="rcard-title">Our Pricing</span>
+        <div class="lbadge"><div class="ldot"></div>Elite Gold</div>
+      </div>
+      <div class="price-formula-box">
+        <div class="pf-title">✅ How Price is Calculated</div>
+        <div class="pf-row"><span>Elite Gold Buy Price</span><span>Market Rate</span></div>
+        <div class="pf-row"><span>+ Our Margin</span><span class="green-text">₹250 Fixed</span></div>
+        <div class="pf-row"><span>+ Delivery</span><span class="blue-text">₹150 Fixed</span></div>
+        <div class="pf-total"><span>Your Total</span><span>Buy + ₹400</span></div>
+      </div>
+      <div class="rtabs">
+        <button class="rtab active" onclick="swTab('micro',this)">Micro</button>
+        <button class="rtab" onclick="swTab('standard',this)">Standard</button>
+        <button class="rtab" onclick="swTab('premium',this)">Premium</button>
+      </div>
+      <div id="rtab-micro">
+        <div class="rrow"><div><div class="rname">50mg Micro</div><div class="rpur">Buy ₹964 + ₹400</div></div><div style="text-align:right"><div class="rval">₹1,364</div><div class="rchg up">Profit ₹250</div></div></div>
+        <div class="rrow"><div><div class="rname">100mg Micro</div><div class="rpur">Buy ₹1,774 + ₹400</div></div><div style="text-align:right"><div class="rval">₹2,174</div><div class="rchg up">Profit ₹250</div></div></div>
+        <div class="rrow"><div><div class="rname">200mg Micro</div><div class="rpur">Buy ₹3,368 + ₹400</div></div><div style="text-align:right"><div class="rval">₹3,768</div><div class="rchg up">Profit ₹250</div></div></div>
+      </div>
+      <div id="rtab-standard" style="display:none">
+        <div class="rrow"><div><div class="rname">0.5g Coin</div><div class="rpur">Buy ₹7,934 + ₹400</div></div><div style="text-align:right"><div class="rval">₹8,334</div><div class="rchg up">Profit ₹250</div></div></div>
+        <div class="rrow"><div><div class="rname">1g Coin</div><div class="rpur">Buy ₹15,765 + ₹400</div></div><div style="text-align:right"><div class="rval">₹16,165</div><div class="rchg up">Profit ₹250</div></div></div>
+        <div class="rrow"><div><div class="rname">2g Coin</div><div class="rpur">Buy ₹32,671 + ₹400</div></div><div style="text-align:right"><div class="rval">₹33,071</div><div class="rchg up">Profit ₹250</div></div></div>
+        <div class="rrow"><div><div class="rname">5g Coin</div><div class="rpur">Buy ₹81,519 + ₹400</div></div><div style="text-align:right"><div class="rval">₹81,919</div><div class="rchg up">Profit ₹250</div></div></div>
+      </div>
+      <div id="rtab-premium" style="display:none">
+        <div class="rrow"><div><div class="rname">0.5g Premium</div><div class="rpur">Buy ₹8,155 + ₹400</div></div><div style="text-align:right"><div class="rval">₹8,555</div><div class="rchg up">Profit ₹250</div></div></div>
+        <div class="rrow"><div><div class="rname">1g Premium</div><div class="rpur">Buy ₹16,017 + ₹400</div></div><div style="text-align:right"><div class="rval">₹16,417</div><div class="rchg up">Profit ₹250</div></div></div>
+      </div>
+      <div class="rupd">Elite Gold Rates · Update weekly when rates change</div>
+      <a href="https://wa.me/919999999999?text=Hi QCG Gold! I want to order." class="wa-btn" target="_blank">💬 Order on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="sec">
+  <div class="slabel">Why QCG Gold</div>
+  <h2 class="stitle">100% Transparent Pricing</h2>
+  <p class="ssub">We show exactly what we earn. ₹250 per coin. No secrets.</p>
+  <div class="feat-grid">
+    <div class="fcard"><div class="fico">✅</div><div class="ftitle">Fixed ₹250 Margin</div><div class="fdesc">Our profit is always ₹250 per coin. No hidden markups ever.</div></div>
+    <div class="fcard"><div class="fico">🚚</div><div class="ftitle">Fixed ₹150 Delivery</div><div class="fdesc">Flat ₹150 anywhere in India. No surprise shipping charges.</div></div>
+    <div class="fcard"><div class="fico">🏭</div><div class="ftitle">Elite Gold Certified</div><div class="fdesc">All coins sourced directly from Elite Gold. 999 purity guaranteed.</div></div>
+    <div class="fcard"><div class="fico">⚡</div><div class="ftitle">No Minimum Order</div><div class="fdesc">Buy even 1 coin of 50mg. No MOQ. Order what you need.</div></div>
+    <div class="fcard"><div class="fico">💰</div><div class="ftitle">Gold SIP Available</div><div class="fdesc">Save daily from ₹10. Get physical coin when balance is ready.</div></div>
+    <div class="fcard"><div class="fico">🔄</div><div class="ftitle">Buyback Available</div><div class="fdesc">Sell back coins at Elite Gold buy price minus ₹150.</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec sec-bg">
+  <div class="slabel">Simple Process</div>
+  <h2 class="stitle">How to Order</h2>
+  <p class="ssub">Pure gold at your door in 4 steps.</p>
+  <div class="steps-grid">
+    <div class="step"><div class="stepn">1</div><div class="stept">Choose Coin</div><div class="stepd">Pick from 50mg to 50g. See exact buy price + ₹250 + ₹150.</div></div>
+    <div class="step"><div class="stepn">2</div><div class="stept">WhatsApp Order</div><div class="stepd">Click Order. Price and GST invoice confirmed instantly.</div></div>
+    <div class="step"><div class="stepn">3</div><div class="stept">Pay via UPI</div><div class="stepd">Secure bank transfer or UPI. No extra charges.</div></div>
+    <div class="step"><div class="stepn">4</div><div class="stept">Receive Gold</div><div class="stepd">Insured delivery pan India with tracking.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-bg"></div>
+  <div class="cta-in">
+    <div class="slabel" style="text-align:center">Start Today</div>
+    <h2 class="cta-t">Click Karo. <span class="grad">Sona Pao.</span></h2>
+    <p class="cta-s">Elite Gold coins. ₹250 margin. ₹150 delivery. No minimum order.</p>
+    <div class="cta-btns">
+      <a href="shop.html" class="btn-p">🪙 Shop Coins</a>
+      <a href="goldsave.html" class="btn-p" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff">💰 Gold SIP</a>
+      <a href="https://wa.me/919999999999" class="btn-o" target="_blank">💬 WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div class="ftop">
+      <div>
+        <div class="logo"><div class="logo-box">QCG</div><div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div></div>
+        <p class="fdesc">Elite Gold certified. ₹250 fixed margin. ₹150 delivery. 50mg to 50g. No minimum. Gold SIP from ₹10/day.</p>
+      </div>
+      <div><div class="fhead">Pages</div><ul class="flinks"><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li><li><a href="goldsave.html">Gold Save</a></li><li><a href="calculator.html">Calculator</a></li><li><a href="about.html">About</a></li></ul></div>
+      <div><div class="fhead">Products</div><ul class="flinks"><li><a href="shop.html">Micro Gold Coins</a></li><li><a href="shop.html">Standard Gold</a></li><li><a href="shop.html">Premium Coins</a></li><li><a href="shop.html">Silver Coins</a></li></ul></div>
+      <div><div class="fhead">Contact</div><ul class="flinks"><li><a href="https://wa.me/919999999999" target="_blank">📱 WhatsApp</a></li><li><a href="#">📸 @qcggold</a></li><li><a href="#">📍 Mumbai, India</a></li><li><a href="#">🕐 9AM–9PM Daily</a></li></ul></div>
+    </div>
+    <div class="fbot">
+      <div class="fcopy">© 2026 <span>QCG Gold</span> by Quick Click Goods · GST Registered · Elite Gold Source · ₹250 Margin + ₹150 Delivery</div>
+      <div class="fsocial"><a href="#" class="slink">📸</a><a href="#" class="slink">💬</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="main.js"></script>
+</body>
+</html>

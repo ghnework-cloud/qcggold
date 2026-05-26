@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Gold Coins — QCG Gold</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-box">QCG</div><div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="goldsave.html">Gold Save</a></li>
+    <li><a href="calculator.html">Calculator</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><div class="rate-pill"><div class="ldot"></div>1g: <strong>₹16,165</strong></div></li>
+    <li><a href="https://wa.me/919999999999" class="nav-cta" target="_blank">Order Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">🏠 Home</a><a href="shop.html">🪙 Shop</a><a href="goldsave.html">💰 Gold Save</a><a href="calculator.html">🧮 Calculator</a><a href="about.html">ℹ️ About</a>
+  <a href="https://wa.me/919999999999" target="_blank" style="background:#25D366;color:white;border-radius:8px;text-align:center">💬 WhatsApp Order</a>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="slabel">Our Collection</div>
+    <h1 class="grad">All Gold & Silver Coins</h1>
+    <p>Elite Gold certified · No minimum order · ₹250 margin + ₹150 delivery on every coin</p>
+    <div class="formula-banner">
+      <strong style="color:var(--gold-l)">💡 Price =</strong>
+      <span class="formula-tag ft-buy">Elite Buy Price</span>
+      <span style="color:var(--gold)">+</span>
+      <span class="formula-tag ft-margin">₹250 Your Margin</span>
+      <span style="color:var(--gold)">+</span>
+      <span class="formula-tag ft-delivery">₹150 Delivery</span>
+      <span style="color:var(--gold)">=</span>
+      <span class="formula-tag ft-result">Your Sell Price</span>
+    </div>
+  </div>
+</div>
+
+<section class="sec">
+  <div class="filter-row">
+    <button class="fbtn fg" onclick="filterP('all',this)">All Products</button>
+    <button class="fbtn" onclick="filterP('micro',this)">⚡ Micro Coins</button>
+    <button class="fbtn" onclick="filterP('gold',this)">🪙 Gold Coins</button>
+    <button class="fbtn" onclick="filterP('premium',this)">👑 Premium</button>
+    <button class="fbtn" onclick="filterP('silver',this)">🥈 Silver</button>
+  </div>
+
+  <div class="pgrid" id="pGrid">
+    <!-- MICRO -->
+    <div class="pcard" data-type="micro"><div class="pimg pig"><span class="pbadge pbg">999</span><span class="pbpre">MICRO</span><div class="coin cg">50mg</div></div><div class="pbody"><div class="pname">50mg Micro Gold</div><div class="ppur">Elite Gold · 999 Purity · 24K · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹964</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹1,364</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('50mg','50mg Micro Gold Coin',964);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="micro"><div class="pimg pig"><span class="pbadge pbg">999</span><span class="pbhot">HOT</span><div class="coin cg">100mg</div></div><div class="pbody"><div class="pname">100mg Micro Gold</div><div class="ppur">Elite Gold · 999 Purity · 24K · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹1,774</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹2,174</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('100mg','100mg Micro Gold Coin',1774);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="micro"><div class="pimg pig"><span class="pbadge pbg">999</span><span class="pbnew">NEW</span><div class="coin cg">200mg</div></div><div class="pbody"><div class="pname">200mg Micro Gold</div><div class="ppur">Elite Gold · 999 Purity · 24K · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹3,368</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹3,768</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('200mg','200mg Micro Gold Coin',3368);return false">🛒 Buy Now</a></div></div>
+    <!-- GOLD -->
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">0.5g</div></div><div class="pbody"><div class="pname">0.5g Gold Coin</div><div class="ppur">Elite Gold · 999 Purity · 24K · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹7,934</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹8,334</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('05g','0.5g Gold Coin',7934);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><span class="pbhot">HOT</span><div class="coin cg">1g</div></div><div class="pbody"><div class="pname">1g Gold Coin</div><div class="ppur">Elite Gold · 999 Purity · 24K · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹15,765</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹16,165</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('1g','1g Gold Coin',15765);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">2g</div></div><div class="pbody"><div class="pname">2g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹32,671</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹33,071</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('2g','2g Gold Coin',32671);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">4g</div></div><div class="pbody"><div class="pname">4g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹65,271</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹65,671</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('4g','4g Gold Coin',65271);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">5g</div></div><div class="pbody"><div class="pname">5g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹81,519</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹81,919</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('5g','5g Gold Coin',81519);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">8g</div></div><div class="pbody"><div class="pname">8g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹1,30,407</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹1,30,807</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('8g','8g Gold Coin',130407);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">10g</div></div><div class="pbody"><div class="pname">10g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹1,62,966</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹1,63,366</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('10g','10g Gold Coin',162966);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><div class="coin cg">20g</div></div><div class="pbody"><div class="pname">20g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹3,25,735</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹3,26,135</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('20g','20g Gold Coin',325735);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="gold"><div class="pimg pig"><span class="pbadge pbg">999</span><span class="pbnew">MAX</span><div class="coin cg">50g</div></div><div class="pbody"><div class="pname">50g Gold Coin</div><div class="ppur">Elite Gold · 999 · No MOQ</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹8,13,963</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹8,14,363</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('50g','50g Gold Coin',813963);return false">🛒 Buy Now</a></div></div>
+    <!-- PREMIUM -->
+    <div class="pcard" data-type="premium"><div class="pimg pig"><span class="pbadge pbg">Premium</span><span class="pbpre">MICRO</span><div class="coin cg" style="font-size:9px">0.5g PREM</div></div><div class="pbody"><div class="pname">0.5g Premium Coin</div><div class="ppur">Laxmi-Rose-KV Design · 999 Purity</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹8,155</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹8,555</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('05gp','0.5g Premium Coin',8155);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard" data-type="premium"><div class="pimg pig"><span class="pbadge pbg">Premium</span><span class="pbhot">BEST</span><div class="coin cg" style="font-size:9px">1g PREM</div></div><div class="pbody"><div class="pname">1g Premium Coin</div><div class="ppur">Rose-Laxmi-Kalp Design · 999 Purity</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹16,017</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice">₹16,417</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbg2" onclick="openM('1gp','1g Premium Coin',16017);return false">🛒 Buy Now</a></div></div>
+    <!-- SILVER -->
+    <div class="pcard silver" data-type="silver"><div class="pimg pis"><span class="pbadge pbs">Silver 999</span><div class="coin cs">5g</div></div><div class="pbody"><div class="pname">5g Silver Coin</div><div class="ppur">999 · Fine Silver · Gifting</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹430</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice sp">₹830</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbs2" onclick="openM('s5g','5g Silver Coin',430);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard silver" data-type="silver"><div class="pimg pis"><span class="pbadge pbs">Silver 999</span><span class="pbhot">HOT</span><div class="coin cs">10g</div></div><div class="pbody"><div class="pname">10g Silver Coin</div><div class="ppur">999 · Fine Silver · Best Value</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹880</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice sp">₹1,280</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbs2" onclick="openM('s10g','10g Silver Coin',880);return false">🛒 Buy Now</a></div></div>
+    <div class="pcard silver" data-type="silver"><div class="pimg pis"><span class="pbadge pbs">Silver 999</span><div class="coin cs">50g</div></div><div class="pbody"><div class="pname">50g Silver Coin</div><div class="ppur">999 · Fine Silver · Bulk</div><div class="pmeta"><span class="ptag ptag-buy">Buy ₹4,350</span><span class="ptag ptag-margin">+₹250</span><span class="ptag ptag-del">+₹150</span></div><div class="pprow"><div><div class="pprice sp">₹4,750</div><div class="pper">Your sell price</div></div><div class="pprofit">Profit ₹250</div></div><a href="#" class="pbuy pbs2" onclick="openM('s50g','50g Silver Coin',4350);return false">🛒 Buy Now</a></div></div>
+  </div>
+</section>
+
+<!-- ORDER MODAL -->
+<div class="mov" id="mov" onclick="closeMOv(event)">
+  <div class="modal">
+    <button class="mcl" onclick="closeM()">✕</button>
+    <div class="mtitle">Order Summary</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px" id="mProd">1g Gold Coin</div>
+    <div style="background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.1);border-radius:9px;padding:12px;margin-bottom:14px;font-size:11px">
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Elite Gold Buy Price</span><span id="mBuyPrice" style="font-weight:600">₹15,765</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Our Margin (Fixed)</span><span style="font-weight:700;color:var(--green)">₹250</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Delivery (Fixed)</span><span style="font-weight:700;color:#6495ED">₹150</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0 0;border-top:1px solid rgba(201,168,76,.15);margin-top:4px;font-weight:700"><span>Per Coin</span><span style="color:var(--gold-l)" id="mPerCoin">₹16,165</span></div>
+    </div>
+    <div class="qrow">
+      <button class="qbtn2" onclick="chQ(-1)">−</button>
+      <span class="qnum" id="mQN">1</span>
+      <button class="qbtn2" onclick="chQ(1)">+</button>
+      <span style="font-size:10px;color:var(--muted);margin-left:5px">coins</span>
+    </div>
+    <div class="mrow"><span class="mlbl">Subtotal (coins only)</span><span class="mval" id="mSub">₹16,015</span></div>
+    <div class="mrow"><span class="mlbl">Delivery (once per order)</span><span class="mval" style="color:#6495ED">₹150</span></div>
+    <div class="mrow mtot"><span class="mlbl" style="font-weight:600">Total</span><span class="mval" id="mT">₹16,165</span></div>
+    <div style="background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.15);border-radius:8px;padding:8px;margin:10px 0;font-size:10px;color:var(--green);text-align:center">✅ Your profit: <strong>₹<span id="mProfit">250</span></strong></div>
+    <a href="#" id="mWa" class="wa-btn" style="margin-top:12px" target="_blank">📲 Order on WhatsApp</a>
+    <div style="text-align:center;font-size:10px;color:var(--muted);margin-top:8px">GST invoice provided · Elite Gold certified</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="prices.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

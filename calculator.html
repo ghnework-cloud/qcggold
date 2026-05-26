@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Calculator — QCG Gold</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-box">QCG</div><div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li><li><a href="goldsave.html">Gold Save</a></li>
+    <li><a href="calculator.html" class="active">Calculator</a></li><li><a href="about.html">About</a></li>
+    <li><a href="https://wa.me/919999999999" class="nav-cta" target="_blank">Order Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">🏠 Home</a><a href="shop.html">🪙 Shop</a><a href="goldsave.html">💰 Gold Save</a><a href="calculator.html">🧮 Calculator</a><a href="about.html">ℹ️ About</a>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="slabel">Price Calculator</div>
+    <h1 class="grad">Calculate Exact Price</h1>
+    <p>Elite Buy Price + ₹250 Margin + ₹150 Delivery = Your Total. 100% transparent.</p>
+  </div>
+</div>
+
+<section class="sec">
+  <div class="calc-box">
+    <div style="margin-bottom:16px;padding:12px 14px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:10px;font-size:12px;text-align:center;color:var(--muted)">
+      💡 <strong style="color:var(--gold-l)">Formula:</strong>
+      Elite Buy Price + <span style="color:var(--green);font-weight:700">₹250 Margin</span> + <span style="color:#6495ED;font-weight:700">₹150 Delivery</span> = <span style="color:var(--gold-l);font-weight:700">Your Total</span>
+    </div>
+    <div class="cgrid">
+      <div>
+        <label class="clbl">Select Product</label>
+        <select class="csel" id="cMetal" onchange="calc()">
+          <optgroup label="Micro Gold (999)">
+            <option value="964">50mg Micro Gold — Buy ₹964</option>
+            <option value="1774">100mg Micro Gold — Buy ₹1,774</option>
+            <option value="3368">200mg Micro Gold — Buy ₹3,368</option>
+          </optgroup>
+          <optgroup label="Standard Gold (999)">
+            <option value="7934">0.5g Gold Coin — Buy ₹7,934</option>
+            <option value="15765" selected>1g Gold Coin — Buy ₹15,765</option>
+            <option value="32671">2g Gold Coin — Buy ₹32,671</option>
+            <option value="65271">4g Gold Coin — Buy ₹65,271</option>
+            <option value="81519">5g Gold Coin — Buy ₹81,519</option>
+            <option value="130407">8g Gold Coin — Buy ₹1,30,407</option>
+            <option value="162966">10g Gold Coin — Buy ₹1,62,966</option>
+            <option value="325735">20g Gold Coin — Buy ₹3,25,735</option>
+            <option value="813963">50g Gold Coin — Buy ₹8,13,963</option>
+          </optgroup>
+          <optgroup label="Premium Coins (999)">
+            <option value="8155">0.5g Premium Coin — Buy ₹8,155</option>
+            <option value="16017">1g Premium Coin — Buy ₹16,017</option>
+          </optgroup>
+          <optgroup label="Silver Coins (999)">
+            <option value="430">5g Silver — Buy ₹430</option>
+            <option value="880">10g Silver — Buy ₹880</option>
+            <option value="1750">20g Silver — Buy ₹1,750</option>
+            <option value="4350">50g Silver — Buy ₹4,350</option>
+            <option value="8700">100g Silver — Buy ₹8,700</option>
+          </optgroup>
+        </select>
+      </div>
+      <div>
+        <label class="clbl">Quantity</label>
+        <input type="number" class="cinp2" id="cQ" value="1" min="1" oninput="calc()">
+      </div>
+    </div>
+    <div class="cgrid">
+      <div>
+        <label class="clbl">Packaging Upgrade</label>
+        <select class="csel" id="cPk" onchange="calc()">
+          <option value="0">Standard (Included in ₹150)</option>
+          <option value="100">Premium Gift Box (+₹100)</option>
+          <option value="250">Luxury Festival Box (+₹250)</option>
+          <option value="450">Corporate Branded Box (+₹450)</option>
+        </select>
+      </div>
+      <div>
+        <label class="clbl">Custom Engraving</label>
+        <select class="csel" id="cEn" onchange="calc()">
+          <option value="0">No Engraving</option>
+          <option value="300">Name Engraving (+₹300)</option>
+          <option value="500">Name + Date (+₹500)</option>
+          <option value="800">Corporate Logo (+₹800)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- LIVE BREAKDOWN -->
+    <div class="calc-breakdown">
+      <div class="cbd"><div class="cbd-val" id="cbBuy" style="color:var(--white)">₹15,765</div><div class="cbd-lbl">Buy Price</div></div>
+      <div class="cbd"><div class="cbd-val" style="color:var(--green)">₹250</div><div class="cbd-lbl">Your Margin</div></div>
+      <div class="cbd"><div class="cbd-val" style="color:#6495ED" id="cbDel">₹150</div><div class="cbd-lbl">Delivery</div></div>
+      <div class="cbd"><div class="cbd-val" id="cbExtra" style="color:var(--gold)">₹0</div><div class="cbd-lbl">Extras</div></div>
+    </div>
+
+    <div class="cresult">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Your Customer Pays</div>
+      <div class="crv" id="cR">₹16,165</div>
+      <div class="crn" id="cN">1g Coin × 1 · Buy ₹15,765 + ₹250 margin + ₹150 delivery</div>
+      <div style="margin-top:10px;padding:8px;background:rgba(76,175,80,.08);border-radius:8px;font-size:11px;color:var(--green)">✅ Your profit on this order: ₹<span id="cProfit">250</span></div>
+    </div>
+
+    <a href="https://wa.me/919999999999?text=Hi QCG Gold! I want to order." class="wa-btn" style="margin-top:14px" target="_blank">📲 Order on WhatsApp</a>
+  </div>
+
+  <!-- QUICK REFERENCE TABLE -->
+  <div style="margin-top:52px">
+    <div class="slabel">Quick Reference</div>
+    <h2 class="stitle">All Prices at a Glance</h2>
+    <p class="ssub">Buy Price + ₹250 + ₹150 = Your Sell Price · Your Profit = ₹250 per coin</p>
+    <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(255,255,255,.06)">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead>
+          <tr style="background:var(--dark2)">
+            <th style="padding:12px 16px;text-align:left;color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase">Coin</th>
+            <th style="padding:12px 16px;text-align:right;color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase">Elite Buy</th>
+            <th style="padding:12px 16px;text-align:right;color:var(--green);font-size:10px;letter-spacing:2px;text-transform:uppercase">+₹250</th>
+            <th style="padding:12px 16px;text-align:right;color:#6495ED;font-size:10px;letter-spacing:2px;text-transform:uppercase">+₹150 Del</th>
+            <th style="padding:12px 16px;text-align:right;color:var(--gold-l);font-size:10px;letter-spacing:2px;text-transform:uppercase">You Sell At</th>
+            <th style="padding:12px 16px;text-align:right;color:var(--green);font-size:10px;letter-spacing:2px;text-transform:uppercase">Your Profit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">50mg Micro</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹964</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹1,364</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">100mg Micro</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹1,774</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹2,174</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">200mg Micro</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹3,368</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹3,768</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">0.5g Coin</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹7,934</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹8,334</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04);background:rgba(201,168,76,.03)"><td style="padding:11px 16px;font-weight:700">1g Coin ⭐</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹15,765</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹16,165</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">2g Coin</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹32,671</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹33,071</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">5g Coin</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹81,519</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹81,919</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">10g Coin</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹1,62,966</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹1,63,366</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.04)"><td style="padding:11px 16px;font-weight:600">0.5g Premium</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹8,155</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹8,555</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+          <tr><td style="padding:11px 16px;font-weight:600">1g Premium</td><td style="padding:11px 16px;text-align:right;color:var(--muted)">₹16,017</td><td style="padding:11px 16px;text-align:right;color:var(--green)">₹250</td><td style="padding:11px 16px;text-align:right;color:#6495ED">₹150</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--gold-l)">₹16,417</td><td style="padding:11px 16px;text-align:right;font-weight:700;color:var(--green)">₹250</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--muted);text-align:center">⚠️ Update <strong>prices.js</strong> file weekly when Elite Gold rates change</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div class="ftop">
+      <div><div class="logo"><div class="logo-box">QCG</div><div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div></div><p class="fdesc">Elite Gold certified. ₹250 fixed margin. ₹150 delivery. No minimum order.</p></div>
+      <div><div class="fhead">Pages</div><ul class="flinks"><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li><li><a href="goldsave.html">Gold Save</a></li><li><a href="calculator.html">Calculator</a></li></ul></div>
+      <div><div class="fhead">Products</div><ul class="flinks"><li><a href="shop.html">Micro Coins</a></li><li><a href="shop.html">Gold Coins</a></li><li><a href="shop.html">Premium Coins</a></li><li><a href="shop.html">Silver Coins</a></li></ul></div>
+      <div><div class="fhead">Contact</div><ul class="flinks"><li><a href="https://wa.me/919999999999" target="_blank">📱 WhatsApp</a></li><li><a href="#">📸 @qcggold</a></li><li><a href="#">📍 Mumbai, India</a></li></ul></div>
+    </div>
+    <div class="fbot"><div class="fcopy">© 2026 <span>QCG Gold</span> by Quick Click Goods · ₹250 Margin + ₹150 Delivery</div><div class="fsocial"><a href="#" class="slink">📸</a><a href="#" class="slink">💬</a></div></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="prices.js"></script>
+<script src="main.js"></script>
+<script>
+// Calculator specific logic
+function calc() {
+  const buyPrice = parseInt(document.getElementById('cMetal').value) || 0;
+  const qty = parseInt(document.getElementById('cQ').value) || 1;
+  const packExtra = parseInt(document.getElementById('cPk').value) || 0;
+  const engrave = parseInt(document.getElementById('cEn').value) || 0;
+  const delivery = DELIVERY + packExtra;
+  const extras = engrave * qty;
+  const subtotal = (buyPrice + MARGIN) * qty;
+  const total = subtotal + delivery + extras;
+  const profit = MARGIN * qty;
+  document.getElementById('cR').textContent = '₹' + total.toLocaleString('en-IN');
+  document.getElementById('cN').textContent = qty + ' coin' + (qty>1?'s':'') + ' · Buy ₹' + (buyPrice*qty).toLocaleString('en-IN') + ' + ₹' + (MARGIN*qty).toLocaleString('en-IN') + ' margin + ₹' + delivery + ' delivery';
+  document.getElementById('cbBuy').textContent = '₹' + (buyPrice * qty).toLocaleString('en-IN');
+  document.getElementById('cbDel').textContent = '₹' + delivery;
+  document.getElementById('cbExtra').textContent = '₹' + extras;
+  document.getElementById('cProfit').textContent = profit.toLocaleString('en-IN');
+}
+calc();
+</script>
+</body>
+</html>

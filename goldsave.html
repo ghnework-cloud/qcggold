@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Save SIP — QCG Gold</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="nav">
+  <a href="index.html" class="logo"><div class="logo-box">QCG</div><div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li>
+    <li><a href="goldsave.html" class="active">Gold Save</a></li><li><a href="calculator.html">Calculator</a></li><li><a href="about.html">About</a></li>
+    <li><a href="https://wa.me/919999999999" class="nav-cta" target="_blank">Order Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">🏠 Home</a><a href="shop.html">🪙 Shop</a><a href="goldsave.html">💰 Gold Save</a><a href="calculator.html">🧮 Calculator</a><a href="about.html">ℹ️ About</a>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="slabel">Like PhonePe Gold</div>
+    <h1 class="grad">QCG Gold Save</h1>
+    <p>Save daily from ₹10. Accumulate balance. Get real Elite Gold coins delivered when ready.</p>
+  </div>
+</div>
+
+<div class="sip-layout" style="padding-top:40px">
+  <!-- LEFT: SIP CONTROLS -->
+  <div>
+    <div class="sip-tabs">
+      <button class="stab active" onclick="showSip('save',this)">💰 Save Gold</button>
+      <button class="stab" onclick="showSip('track',this)">📊 My Savings</button>
+      <button class="stab" onclick="showSip('redeem',this)">🪙 Get Coins</button>
+      <button class="stab" onclick="showSip('how',this)">❓ How It Works</button>
+    </div>
+
+    <!-- SAVE TAB -->
+    <div id="sip-save">
+      <div class="card">
+        <div class="ctitle"><span>💰</span>Set Up Gold SIP</div>
+        <div class="amt-disp">
+          <div class="amt-lbl">You will save</div>
+          <div class="amt-big" id="sipDispAmt">₹500</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">Added to your balance. Redeem for physical coin anytime.</div>
+        </div>
+        <div class="qamts">
+          <button class="qbtn" onclick="setA(100,this)">₹100</button>
+          <button class="qbtn" onclick="setA(250,this)">₹250</button>
+          <button class="qbtn active" onclick="setA(500,this)">₹500</button>
+          <button class="qbtn" onclick="setA(1000,this)">₹1K</button>
+          <button class="qbtn" onclick="setA(2000,this)">₹2K</button>
+          <button class="qbtn" onclick="setA(5000,this)">₹5K</button>
+          <button class="qbtn" onclick="setA(10000,this)">₹10K</button>
+          <button class="qbtn" onclick="document.getElementById('sipCustom').focus()">Custom</button>
+        </div>
+        <div class="cinp-w"><span class="rsign">₹</span><input type="number" class="cinp" id="sipCustom" value="500" min="10" oninput="updSip()"></div>
+        <label class="rl">Save How Often?</label>
+        <div class="freq-row">
+          <button class="frtab active" onclick="setFr('daily',this)">Daily</button>
+          <button class="frtab" onclick="setFr('weekly',this)">Weekly</button>
+          <button class="frtab" onclick="setFr('monthly',this)">Monthly</button>
+          <button class="frtab" onclick="setFr('onetime',this)">One Time</button>
+        </div>
+        <div class="proj-grid">
+          <div class="prj"><div class="prjv" id="p1m">₹15,000</div><div class="prjl">1 Month</div></div>
+          <div class="prj"><div class="prjv" id="p3m">₹45,000</div><div class="prjl">3 Months</div></div>
+          <div class="prj"><div class="prjv" id="p6m">₹90,000</div><div class="prjl">6 Months</div></div>
+          <div class="prj"><div class="prjv" id="p1y">₹1,80,000</div><div class="prjl">1 Year</div></div>
+        </div>
+        <div style="margin:12px 0;padding:12px;background:rgba(201,168,76,.06);border-radius:11px;border:1px solid rgba(201,168,76,.12)">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px">📦 Redeem physical coin when balance reaches:</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font-size:10px;background:var(--dark3);padding:3px 9px;border-radius:100px;color:var(--gold-l)">₹1,364 → 50mg</span>
+            <span style="font-size:10px;background:var(--dark3);padding:3px 9px;border-radius:100px;color:var(--gold-l)">₹2,174 → 100mg</span>
+            <span style="font-size:10px;background:var(--dark3);padding:3px 9px;border-radius:100px;color:var(--gold-l)">₹8,334 → 0.5g</span>
+            <span style="font-size:10px;background:var(--dark3);padding:3px 9px;border-radius:100px;color:var(--gold-l)">₹16,165 → 1g</span>
+          </div>
+        </div>
+        <button class="start-btn" onclick="startSip()">🪙 Start Gold SIP — <span id="sipBtnT">₹500/day</span></button>
+      </div>
+    </div>
+
+    <!-- TRACK TAB -->
+    <div id="sip-track" style="display:none">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+          <div>
+            <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px">My Gold Balance</div>
+            <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold-l)" id="trTot">₹0</div>
+            <div style="font-size:11px;color:var(--muted)" id="trInr">Start saving to see progress</div>
+          </div>
+          <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Total Saved</div><div style="font-size:14px;font-weight:600;color:var(--green)" id="trGain">₹0</div></div>
+        </div>
+        <div class="chart-wrap">
+          <svg class="chart" id="sipChart" viewBox="0 0 600 150" preserveAspectRatio="none">
+            <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C9A84C" stop-opacity=".3"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></linearGradient></defs>
+            <path id="cArea" fill="url(#cg)"/><path id="cLine" fill="none" stroke="#C9A84C" stroke-width="2"/>
+          </svg>
+        </div>
+        <div style="margin:14px 0">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:6px"><span>Progress to next coin</span><span id="progPct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="progF" style="width:0%"></div></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px" id="progNxt">Save ₹1,364 more for 50mg coin</div>
+        </div>
+        <div class="ms-row">
+          <div class="ms" data-thresh="1364"><div class="ms-icon">🌱</div><div class="ms-g">50mg</div><div class="ms-l">₹1,364</div></div>
+          <div class="ms" data-thresh="2174"><div class="ms-icon">⭐</div><div class="ms-g">100mg</div><div class="ms-l">₹2,174</div></div>
+          <div class="ms" data-thresh="3768"><div class="ms-icon">🌟</div><div class="ms-g">200mg</div><div class="ms-l">₹3,768</div></div>
+          <div class="ms" data-thresh="8334"><div class="ms-icon">🏆</div><div class="ms-g">0.5g</div><div class="ms-l">₹8,334</div></div>
+          <div class="ms" data-thresh="16165"><div class="ms-icon">💎</div><div class="ms-g">1g</div><div class="ms-l">₹16,165</div></div>
+          <div class="ms" data-thresh="33071"><div class="ms-icon">👑</div><div class="ms-g">2g</div><div class="ms-l">₹33,071</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle"><span>📋</span>Transaction History</div>
+        <div class="hist-list" id="histList"><div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">No transactions yet. Start your Gold SIP!</div></div>
+      </div>
+    </div>
+
+    <!-- REDEEM TAB -->
+    <div id="sip-redeem" style="display:none">
+      <div class="card">
+        <div class="ctitle"><span>🪙</span>Get Physical Coin</div>
+        <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:13px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div><div style="font-size:10px;color:var(--muted)">Your Balance</div><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold-l)" id="rdBal">₹0</div></div>
+          <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Status</div><div style="font-size:13px;font-weight:700" id="rdInr">Save more to redeem</div></div>
+        </div>
+        <div class="rd-opts">
+          <div class="rd-opt sel" onclick="selRd('coin',this)"><div class="rd-ico">🪙</div><div class="rd-ttl">Physical Coin</div><div class="rd-dsc">Real coin delivered to door</div></div>
+          <div class="rd-opt" onclick="selRd('sell',this)"><div class="rd-ico">💵</div><div class="rd-ttl">Sell Gold</div><div class="rd-dsc">Get money at buyback rate</div></div>
+        </div>
+        <div id="rdCoinF">
+          <label class="rl">Select Coin Size</label>
+          <select class="rsel" id="rdSize">
+            <option value="50mg,1364">50mg Micro — ₹1,364</option>
+            <option value="100mg,2174">100mg Micro — ₹2,174</option>
+            <option value="200mg,3768">200mg Micro — ₹3,768</option>
+            <option value="0.5g,8334">0.5g Coin — ₹8,334</option>
+            <option value="1g,16165" selected>1g Coin — ₹16,165</option>
+            <option value="2g,33071">2g Coin — ₹33,071</option>
+          </select>
+          <label class="rl">Quantity</label>
+          <input type="number" class="rinp" id="rdQty" value="1" min="1">
+          <label class="rl">Delivery Address</label>
+          <input type="text" class="rinp" id="rdAddr" placeholder="Full delivery address...">
+          <button class="start-btn" onclick="redeemNow()">🪙 Redeem via WhatsApp</button>
+        </div>
+        <div id="rdSellF" style="display:none">
+          <div style="background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);border-radius:9px;padding:12px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.6">
+            💡 Buyback rate: Elite Gold buy price minus ₹150 handling charges.
+          </div>
+          <button class="start-btn" style="background:linear-gradient(135deg,#4CAF50,#388E3C)" onclick="sellGold()">💵 Sell via WhatsApp</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS TAB -->
+    <div id="sip-how" style="display:none">
+      <div class="card">
+        <div class="ctitle"><span>❓</span>How QCG Gold Save Works</div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:#000;flex-shrink:0">1</div><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Set Your SIP Amount</div><div style="font-size:11px;color:var(--muted);line-height:1.6">Choose ₹10 to ₹10,000. Daily, weekly, or monthly. No lock-in period.</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:#000;flex-shrink:0">2</div><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Pay via UPI</div><div style="font-size:11px;color:var(--muted);line-height:1.6">Send UPI payment to our QCG Gold account. WhatsApp us screenshot for confirmation.</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:#000;flex-shrink:0">3</div><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Balance Grows</div><div style="font-size:11px;color:var(--muted);line-height:1.6">We update your balance. Track progress on this page. See milestones as you save.</div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:36px;height:36px;min-width:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:#000;flex-shrink:0">4</div><div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Get Physical Coin</div><div style="font-size:11px;color:var(--muted);line-height:1.6">Reach ₹1,364 for 50mg or ₹16,165 for 1g coin. Request delivery. Arrives in 24 hours.</div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctitle"><span>⚠️</span>Important Notes</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;color:var(--muted);padding:10px;background:var(--dark3);border-radius:9px;line-height:1.6">✅ Coin prices are fixed: Elite Buy Price + ₹250 margin + ₹150 delivery.</div>
+          <div style="font-size:11px;color:var(--muted);padding:10px;background:var(--dark3);border-radius:9px;line-height:1.6">✅ Prices update weekly when Elite Gold rates change.</div>
+          <div style="font-size:11px;color:var(--muted);padding:10px;background:var(--dark3);border-radius:9px;line-height:1.6">✅ Savings are tracked manually by QCG Gold team.</div>
+          <div style="font-size:11px;color:var(--muted);padding:10px;background:var(--dark3);border-radius:9px;line-height:1.6">⚠️ This is a manual savings facilitation service. Not a SEBI registered investment product.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SIDEBAR -->
+  <div>
+    <div class="bal-card">
+      <div class="bal-lbl">My Gold Balance</div>
+      <div class="bal-g" id="sideG" style="font-size:30px">₹0</div>
+      <div class="bal-inr">Total accumulated savings</div>
+      <div class="bal-gain">▲ <span id="sideGain">Start saving today!</span></div>
+    </div>
+
+    <div style="background:var(--dark2);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:15px;margin-bottom:14px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:11px">Coin Prices (Fixed)</div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px"><span style="color:var(--muted)">50mg Micro</span><span style="font-weight:600;color:var(--gold-l)">₹1,364</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px"><span style="color:var(--muted)">100mg Micro</span><span style="font-weight:600;color:var(--gold-l)">₹2,174</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px"><span style="color:var(--muted)">0.5g Coin</span><span style="font-weight:600;color:var(--gold-l)">₹8,334</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:12px"><span style="color:var(--muted)">1g Coin</span><span style="font-weight:600;color:var(--gold-l)">₹16,165</span></div>
+    </div>
+
+    <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.12);border-radius:12px;padding:14px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;margin-bottom:7px;color:var(--gold-l)">💡 Pricing Formula</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7">Elite Gold Buy Price<br>+ <span style="color:var(--green);font-weight:700">₹250</span> Our Margin<br>+ <span style="color:#6495ED;font-weight:700">₹150</span> Delivery<br>= <strong style="color:var(--white)">Your Final Price</strong></div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(76,175,80,.1),rgba(76,175,80,.03));border:1px solid rgba(76,175,80,.2);border-radius:12px;padding:14px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:5px">🎁 Refer & Earn</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:9px">Refer a friend. When they save ₹1,000+, you both get ₹50 off next order!</div>
+      <button onclick="copyRef()" style="width:100%;padding:8px;border-radius:8px;background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.3);color:var(--green);font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif">📋 Copy Referral Link</button>
+    </div>
+
+    <div class="card" style="margin-bottom:0">
+      <div class="ctitle" style="margin-bottom:11px"><span>⚡</span>Quick Add to Balance</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <button class="qbtn" onclick="qAdd(100)">+₹100</button>
+        <button class="qbtn" onclick="qAdd(500)">+₹500</button>
+        <button class="qbtn" onclick="qAdd(1000)">+₹1,000</button>
+        <button class="qbtn" onclick="qAdd(5000)">+₹5,000</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div class="ftop">
+      <div><div class="logo"><div class="logo-box">QCG</div><div><div class="logo-name">QCG Gold</div><div class="logo-sub">Quick Click Goods</div></div></div><p class="fdesc">Save daily in pure gold. Get real coins delivered. ₹250 margin + ₹150 delivery.</p></div>
+      <div><div class="fhead">Pages</div><ul class="flinks"><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li><li><a href="goldsave.html">Gold Save</a></li><li><a href="calculator.html">Calculator</a></li></ul></div>
+      <div><div class="fhead">Products</div><ul class="flinks"><li><a href="shop.html">Micro Coins</a></li><li><a href="shop.html">Gold Coins</a></li><li><a href="shop.html">Silver Coins</a></li></ul></div>
+      <div><div class="fhead">Contact</div><ul class="flinks"><li><a href="https://wa.me/919999999999" target="_blank">📱 WhatsApp</a></li><li><a href="#">📸 @qcggold</a></li><li><a href="#">📍 Mumbai</a></li></ul></div>
+    </div>
+    <div class="fbot"><div class="fcopy">© 2026 <span>QCG Gold</span> by Quick Click Goods · GST Registered · ₹250 Margin + ₹150 Delivery</div><div class="fsocial"><a href="#" class="slink">📸</a><a href="#" class="slink">💬</a></div></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="prices.js"></script>
+<script src="main.js"></script>
+<script>
+// Gold Save SIP Logic
+let sipAmt = 500, sipFreq = 'daily', totalSaved = 0, txns = [];
+const MILESTONES = [1364,2174,3768,8334,16165,33071,65671];
+
+function setA(v,btn){document.getElementById('sipCustom').value=v;document.querySelectorAll('.qbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updSip();}
+function setFr(f,btn){sipFreq=f;document.querySelectorAll('.frtab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updSip();}
+function updSip(){
+  const a=parseFloat(document.getElementById('sipCustom').value)||0;sipAmt=a;
+  setEl('sipDispAmt','₹'+a.toLocaleString('en-IN'));
+  setEl('sipBtnT','₹'+a.toLocaleString('en-IN')+'/'+sipFreq);
+  const m={daily:{m1:30,m3:90,m6:180,m12:365},weekly:{m1:4,m3:13,m6:26,m12:52},monthly:{m1:1,m3:3,m6:6,m12:12},onetime:{m1:1,m3:1,m6:1,m12:1}};
+  const f=m[sipFreq];
+  setEl('p1m','₹'+(a*f.m1).toLocaleString('en-IN'));
+  setEl('p3m','₹'+(a*f.m3).toLocaleString('en-IN'));
+  setEl('p6m','₹'+(a*f.m6).toLocaleString('en-IN'));
+  setEl('p1y','₹'+(a*f.m12).toLocaleString('en-IN'));
+}
+function startSip(){
+  if(sipAmt<10){showToast('⚠️ Minimum ₹10');return;}
+  const msg=encodeURIComponent(`Hi QCG Gold! I want to start Gold SIP:\n• Amount: ₹${sipAmt.toLocaleString('en-IN')}\n• Frequency: ${sipFreq}\nPlease share UPI details to start!`);
+  window.open('https://wa.me/919999999999?text='+msg,'_blank');
+  setTimeout(()=>{addTx(sipAmt,'Gold SIP — '+sipFreq.charAt(0).toUpperCase()+sipFreq.slice(1));showSip('track',document.querySelectorAll('.stab')[1]);},200);
+}
+function qAdd(amt){
+  if(txns.length===0){sipAmt=amt;document.getElementById('sipCustom').value=amt;updSip();startSip();}
+  else{addTx(amt,'Quick Add');showToast('✅ ₹'+amt.toLocaleString('en-IN')+' added!');}
+}
+function addTx(amt,lbl){
+  totalSaved+=amt;
+  txns.unshift({date:new Date().toLocaleDateString('en-IN'),lbl,amt});
+  renderHist();updBal();updChart();checkMS();
+}
+function updBal(){
+  setEl('sideG','₹'+totalSaved.toLocaleString('en-IN'));
+  setEl('trTot','₹'+totalSaved.toLocaleString('en-IN'));
+  setEl('trGain','₹'+totalSaved.toLocaleString('en-IN')+' saved');
+  setEl('rdBal','₹'+totalSaved.toLocaleString('en-IN'));
+  setEl('sideGain','₹'+totalSaved.toLocaleString('en-IN')+' saved so far!');
+  const next=MILESTONES.find(m=>m>totalSaved)||MILESTONES[MILESTONES.length-1];
+  const prev=MILESTONES[MILESTONES.indexOf(next)-1]||0;
+  const pct=Math.min(100,Math.round(((totalSaved-prev)/(next-prev))*100))||0;
+  const pf=document.getElementById('progF');if(pf)pf.style.width=pct+'%';
+  setEl('progPct',pct+'%');
+  setEl('progNxt','Save ₹'+Math.max(0,next-totalSaved).toLocaleString('en-IN')+' more for next coin');
+  const redeemable=MILESTONES.filter(m=>m<=totalSaved);
+  setEl('trInr',redeemable.length>0?redeemable.length+' coin size(s) redeemable!':'Keep saving...');
+  setEl('rdInr',redeemable.length>0?'Can redeem coins!':'Save more to redeem');
+}
+function renderHist(){
+  const el=document.getElementById('histList');if(!el)return;
+  if(txns.length===0){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">No transactions yet.</div>';return;}
+  el.innerHTML=txns.map(t=>`<div class="hist-item"><div class="hi-l"><div class="hi-ico">💰</div><div><div class="hi-lbl">${t.lbl}</div><div class="hi-date">${t.date}</div></div></div><div class="hi-r"><div class="hi-amt">+₹${t.amt.toLocaleString('en-IN')}</div><div class="hi-g">Added to balance</div></div></div>`).join('');
+}
+function checkMS(){
+  document.querySelectorAll('.ms').forEach(m=>{
+    const thresh=parseInt(m.dataset.thresh);
+    if(totalSaved>=thresh){m.classList.add('ok');if(!m.querySelector('.ms-chk')){const c=document.createElement('div');c.className='ms-chk';c.textContent='✓ Done!';m.appendChild(c);}}
+  });
+}
+function updChart(){
+  if(txns.length<2)return;
+  const vals=[];let r=0;
+  for(let i=txns.length-1;i>=0;i--){r+=txns[i].amt;vals.push(r);}
+  const max=Math.max(...vals),W=600,H=150,p=18;
+  const pts=vals.map((v,i)=>({x:p+(i/(vals.length-1||1))*(W-p*2),y:H-p-(v/max)*(H-p*2)}));
+  const ld='M'+pts.map(pt=>pt.x+','+pt.y).join('L');
+  const ad=ld+'L'+(W-p)+','+(H-p)+'L'+p+','+(H-p)+'Z';
+  const cl=document.getElementById('cLine');if(cl)cl.setAttribute('d',ld);
+  const ca=document.getElementById('cArea');if(ca)ca.setAttribute('d',ad);
+}
+function selRd(type,el){
+  document.querySelectorAll('.rd-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  const cf=document.getElementById('rdCoinF');if(cf)cf.style.display=type==='coin'?'block':'none';
+  const sf=document.getElementById('rdSellF');if(sf)sf.style.display=type==='sell'?'block':'none';
+}
+function redeemNow(){
+  const sz=document.getElementById('rdSize')?.value||'1g,16165';
+  const parts=sz.split(',');
+  const qty=document.getElementById('rdQty')?.value||1;
+  const addr=document.getElementById('rdAddr')?.value||'';
+  if(!addr){showToast('⚠️ Enter delivery address');return;}
+  const msg=encodeURIComponent(`Hi QCG Gold! Redeem Gold SIP:\n• Coin: ${parts[0]} (₹${parseInt(parts[1]).toLocaleString('en-IN')})\n• Qty: ${qty}\n• Balance: ₹${totalSaved.toLocaleString('en-IN')}\n• Deliver to: ${addr}`);
+  window.open('https://wa.me/919999999999?text='+msg,'_blank');
+}
+function sellGold(){
+  const msg=encodeURIComponent(`Hi QCG Gold! Sell my Gold SIP balance.\n• Balance: ₹${totalSaved.toLocaleString('en-IN')}\nBuyback at Elite Gold rate minus ₹150. Please process.`);
+  window.open('https://wa.me/919999999999?text='+msg,'_blank');
+}
+function showSip(s,btn){
+  ['save','track','redeem','how'].forEach(id=>{const el=document.getElementById('sip-'+id);if(el)el.style.display='none';});
+  const el=document.getElementById('sip-'+s);if(el)el.style.display='block';
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(s==='track')updChart();
+}
+updSip();
+</script>
+</body>
+</html>
