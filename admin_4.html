@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCG Gold — Admin CMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#F0D080;--gold-d:#8B6914;
+  --dark:#0F0F0F;--dark2:#171717;--dark3:#1F1F1F;--dark4:#272727;
+  --white:#F5F5F5;--muted:#666;--muted2:#888;
+  --green:#22C55E;--red:#EF4444;--blue:#3B82F6;--purple:#8B5CF6;--orange:#F59E0B;
+  --border:rgba(255,255,255,.08);
+  --radius:10px;--radius-lg:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--dark);color:var(--white);overflow:hidden;font-size:14px}
+
+/* LAYOUT */
+.app{display:flex;height:100vh}
+.sidebar{width:220px;min-width:220px;background:var(--dark2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* SIDEBAR */
+.s-logo{padding:18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.s-logo-box{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#000}
+.s-logo-name{font-size:14px;font-weight:700;color:var(--gold-l);line-height:1}
+.s-logo-sub{font-size:9px;color:var(--muted2);letter-spacing:2px;text-transform:uppercase}
+.s-section{padding:14px 14px 6px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;margin:1px 8px;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted2);transition:all .15s;border:none;background:transparent;width:calc(100% - 16px);text-align:left;font-family:'Outfit',sans-serif}
+.nav-btn:hover{background:var(--dark3);color:var(--white)}
+.nav-btn.on{background:rgba(201,168,76,.12);color:var(--gold-l)}
+.nav-btn svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
+.nav-btn.on svg{opacity:1}
+.s-bottom{margin-top:auto;padding:12px;border-top:1px solid var(--border)}
+.s-live-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:9px;border-radius:8px;background:var(--green);color:#000;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:none;transition:all .2s}
+.s-live-btn:hover{background:#16a34a}
+
+/* TOPBAR */
+.topbar{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--dark2);flex-shrink:0}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-title{font-size:16px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:8px}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:20px}
+.page{display:none}
+.page.on{display:block}
+
+/* BUTTONS */
+.btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:#000}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.3)}
+.btn-outline{background:transparent;color:var(--white);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-l)}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#16a34a}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#dc2626}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-purple{background:var(--purple);color:#fff}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-xs{padding:3px 8px;font-size:10px;border-radius:6px}
+.btn-icon{padding:6px;border-radius:7px;background:var(--dark3);border:1px solid var(--border);color:var(--muted2);cursor:pointer;display:inline-flex;align-items:center;transition:all .15s}
+.btn-icon:hover{background:var(--dark4);color:var(--white)}
+
+/* CARDS */
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:16px}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:600}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--dark2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px}
+.stat-n{font-size:22px;font-weight:700;margin-bottom:2px}
+.stat-l{font-size:11px;color:var(--muted2)}
+.stat-g .stat-n{color:var(--gold-l)}
+.stat-gr .stat-n{color:var(--green)}
+.stat-b .stat-n{color:var(--blue)}
+
+/* PRODUCT GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.prod-card{background:var(--dark2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:all .2s}
+.prod-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-2px)}
+.prod-img-area{height:160px;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;overflow:hidden}
+.prod-img-area img{width:100%;height:100%;object-fit:cover}
+.prod-img-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:11px}
+.prod-img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;gap:8px}
+.prod-img-area:hover .prod-img-overlay{display:flex}
+.prod-body{padding:14px}
+.prod-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.prod-sub{font-size:11px;color:var(--muted2);margin-bottom:10px}
+.prod-price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.prod-price{font-size:18px;font-weight:700;color:var(--gold-l)}
+.prod-buy-price{font-size:11px;color:var(--muted2)}
+.prod-actions{display:flex;gap:6px}
+.prod-badge{position:absolute;top:10px;left:10px;padding:2px 8px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.prod-badge-status{position:absolute;top:10px;right:10px;padding:2px 8px;border-radius:5px;font-size:9px;font-weight:700}
+.badge-micro{background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.3);color:#C4B5FD}
+.badge-gold{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.25);color:var(--gold-l)}
+.badge-premium{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25);color:#93C5FD}
+.badge-silver{background:rgba(168,169,173,.15);border:1px solid rgba(168,169,173,.25);color:#D4D5D9}
+.badge-active{background:rgba(34,197,94,.15);color:var(--green)}
+.badge-hidden{background:rgba(239,68,68,.15);color:var(--red)}
+
+/* VARIATIONS */
+.var-list{display:flex;flex-direction:column;gap:8px}
+.var-item{background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:12px;display:flex;align-items:center;gap:10px}
+.var-img{width:44px;height:44px;border-radius:7px;object-fit:cover;background:var(--dark4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden}
+.var-img img{width:100%;height:100%;object-fit:cover}
+.var-info{flex:1;min-width:0}
+.var-name{font-size:12px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.var-price{font-size:11px;color:var(--gold-l);font-weight:700}
+.var-actions{display:flex;gap:5px;flex-shrink:0}
+
+/* FORM */
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2)}
+.inp,.sel,.ta{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:13px;font-family:'Outfit',sans-serif;padding:9px 12px;outline:none;transition:border-color .2s}
+.inp:focus,.sel:focus,.ta:focus{border-color:var(--gold)}
+.sel option{background:var(--dark3)}
+.ta{min-height:80px;resize:vertical}
+.inp-hint{font-size:10px;color:var(--muted);margin-top:2px}
+.color-inp{width:48px;height:36px;border-radius:8px;border:1px solid var(--border);padding:2px;cursor:pointer;background:var(--dark3)}
+
+/* IMAGE UPLOAD */
+.img-upload-area{border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.img-upload-area:hover{border-color:var(--gold);background:rgba(201,168,76,.04)}
+.img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-upload-icon{font-size:28px;margin-bottom:8px}
+.img-upload-text{font-size:12px;color:var(--muted2)}
+.img-upload-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.img-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-top:12px}
+.img-preview-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--dark3)}
+.img-preview-item img{width:100%;height:100%;object-fit:cover}
+.img-preview-del{position:absolute;top:4px;right:4px;background:rgba(239,68,68,.9);border:none;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
+.img-preview-main{position:absolute;bottom:4px;left:4px;background:rgba(201,168,76,.9);border:none;color:#000;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700}
+
+/* TOGGLE */
+.toggle-wrap{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--dark3);border-radius:9px;border:1px solid var(--border)}
+.toggle-info .toggle-label{font-size:12px;font-weight:600}
+.toggle-info .toggle-sub{font-size:10px;color:var(--muted2);margin-top:1px}
+.toggle{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.tslider{position:absolute;cursor:pointer;inset:0;background:var(--dark4);border-radius:11px;transition:.3s;border:1px solid var(--border)}
+.tslider:before{content:'';position:absolute;height:16px;width:16px;left:2px;bottom:2px;background:var(--muted);border-radius:50%;transition:.3s}
+.toggle input:checked+.tslider{background:rgba(34,197,94,.2);border-color:var(--green)}
+.toggle input:checked+.tslider:before{transform:translateX(18px);background:var(--green)}
+
+/* DRAWER */
+.drawer-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;backdrop-filter:blur(4px)}
+.drawer-bg.open{display:flex;align-items:stretch;justify-content:flex-end}
+.drawer{width:560px;background:var(--dark2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;animation:slideIn .25s ease}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.drawer-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.drawer-title{font-size:16px;font-weight:600}
+.drawer-body{flex:1;overflow-y:auto;padding:20px}
+.drawer-footer{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--dark2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;width:90%;max-width:480px;position:relative;animation:popIn .2s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:18px;color:var(--gold-l)}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--dark3);border:none;color:var(--muted2);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--dark4);color:var(--white)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.tbl td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.02)}
+
+/* BADGE */
+.badge{padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700}
+.b-green{background:rgba(34,197,94,.15);color:var(--green)}
+.b-red{background:rgba(239,68,68,.15);color:var(--red)}
+.b-gold{background:rgba(201,168,76,.15);color:var(--gold-l)}
+.b-blue{background:rgba(59,130,246,.15);color:#93C5FD}
+.b-purple{background:rgba(139,92,246,.15);color:#C4B5FD}
+
+/* PRICE DISPLAY */
+.price-tag{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--gold-l)}
+.buy-tag{font-size:11px;color:var(--muted2)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:11px 18px;border-radius:9px;font-size:12px;z-index:9999;transform:translateY(60px);transition:transform .3s;display:flex;align-items:center;gap:8px;background:var(--dark2);border:1px solid var(--border)}
+.toast.show{transform:translateY(0)}
+.toast.t-success{border-color:rgba(34,197,94,.4);color:var(--green)}
+.toast.t-error{border-color:rgba(239,68,68,.4);color:var(--red)}
+.toast.t-info{border-color:rgba(201,168,76,.4);color:var(--gold-l)}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--dark3);padding:3px;border-radius:9px;margin-bottom:18px}
+.tab{flex:1;padding:7px 12px;border-radius:7px;border:none;background:transparent;color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;text-align:center}
+.tab.on{background:var(--dark2);color:var(--white)}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:18px 0}
+.section-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+
+/* CODE EDITOR */
+.code-editor{background:var(--dark);border:1px solid var(--border);border-radius:9px;font-family:'SF Mono',Monaco,monospace;font-size:12px;color:#e2e8f0;padding:14px;min-height:200px;resize:vertical;width:100%;outline:none;line-height:1.6}
+.code-editor:focus{border-color:var(--blue)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--dark4);border-radius:2px}
+
+@media(max-width:768px){
+  .sidebar{width:54px;min-width:54px}
+  .s-logo-name,.s-logo-sub,.nav-btn span,.s-section{display:none}
+  .nav-btn{justify-content:center;padding:10px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .drawer{width:100%}
+  .form-row,.form-row-3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="s-logo">
+    <div class="s-logo-box">QCG</div>
+    <div><div class="s-logo-name">QCG Gold</div><div class="s-logo-sub">Admin CMS</div></div>
+  </div>
+
+  <div class="s-section">Main</div>
+  <button class="nav-btn on" onclick="go('dashboard',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <span>Dashboard</span>
+  </button>
+
+  <div class="s-section">Products</div>
+  <button class="nav-btn" onclick="go('products',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+    <span>All Products</span>
+  </button>
+  <button class="nav-btn" onclick="go('variations',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <span>Variations</span>
+  </button>
+  <button class="nav-btn" onclick="go('prices',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    <span>Prices</span>
+  </button>
+
+  <div class="s-section">Content</div>
+  <button class="nav-btn" onclick="go('banners',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Banners</span>
+  </button>
+  <button class="nav-btn" onclick="go('reviews',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span>Reviews</span>
+  </button>
+  <button class="nav-btn" onclick="go('pages',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span>Pages</span>
+  </button>
+
+  <div class="s-section">Settings</div>
+  <button class="nav-btn" onclick="go('whatsapp',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013 5.69C2.99 4.6 3.8 3.64 4.87 3.5H7.88a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 11.3a16 16 0 006.61 6.61l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    <span>WhatsApp</span>
+  </button>
+  <button class="nav-btn" onclick="go('seo',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span>SEO</span>
+  </button>
+  <button class="nav-btn" onclick="go('code',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    <span>Custom Code</span>
+  </button>
+  <button class="nav-btn" onclick="go('settings',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <span>Settings</span>
+  </button>
+
+  <div class="s-bottom">
+    <a href="index.html" target="_blank" class="s-live-btn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+      View Live Site
+    </a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title" id="pageTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-outline btn-sm" onclick="exportData()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export prices.js
+      </button>
+      <button class="btn btn-gold btn-sm" onclick="saveAll()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save All
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page on" id="page-dashboard">
+      <div class="stats-row">
+        <div class="stat stat-g"><div style="font-size:20px;margin-bottom:8px">🪙</div><div class="stat-n" id="d-prods">0</div><div class="stat-l">Total Products</div></div>
+        <div class="stat stat-g"><div style="font-size:20px;margin-bottom:8px">⚡</div><div class="stat-n" id="d-vars">0</div><div class="stat-l">Total Variations</div></div>
+        <div class="stat stat-gr"><div style="font-size:20px;margin-bottom:8px">💰</div><div class="stat-n">₹250</div><div class="stat-l">Margin Per Coin</div></div>
+        <div class="stat stat-b"><div style="font-size:20px;margin-bottom:8px">📱</div><div class="stat-n" id="d-wa" style="font-size:13px">Not Set</div><div class="stat-l">WhatsApp</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Quick Actions</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="go('products',document.querySelector('[onclick*=products]'))">🪙 Manage Products</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="go('prices',document.querySelector('[onclick*=prices]'))">💵 Update Prices</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="go('banners',document.querySelector('[onclick*=banners]'))">🖼️ Edit Banners</button>
+            <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="go('code',document.querySelector('[onclick*=code]'))">💻 Custom Code</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Site Status</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Website Live</div><div class="toggle-sub">ghnework-cloud.github.io/qcggold</div></div><label class="toggle"><input type="checkbox" id="t-live" checked><span class="tslider"></span></label></div>
+            <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Gold Save (SIP)</div><div class="toggle-sub">PhonePe-style savings</div></div><label class="toggle"><input type="checkbox" id="t-sip" checked><span class="tslider"></span></label></div>
+            <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Price Calculator</div><div class="toggle-sub">Show calculator page</div></div><label class="toggle"><input type="checkbox" id="t-calc" checked><span class="tslider"></span></label></div>
+            <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Buyback Feature</div><div class="toggle-sub">Show buyback info</div></div><label class="toggle"><input type="checkbox" id="t-buyback" checked><span class="tslider"></span></label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="page" id="page-products">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="display:flex;gap:8px">
+          <input type="text" class="inp" placeholder="Search products..." style="width:220px" id="prodSearch" oninput="renderProducts()">
+          <select class="sel" style="width:140px" id="prodFilter" onchange="renderProducts()">
+            <option value="all">All Types</option>
+            <option value="micro">Micro</option>
+            <option value="gold">Gold</option>
+            <option value="premium">Premium</option>
+            <option value="silver">Silver</option>
+          </select>
+        </div>
+        <button class="btn btn-gold" onclick="openProductDrawer(null)">+ Add Product</button>
+      </div>
+      <div class="prod-grid" id="prodGrid"></div>
+    </div>
+
+    <!-- VARIATIONS -->
+    <div class="page" id="page-variations">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-size:13px;color:var(--muted2)">Manage weight/size variations for each product</div>
+        <button class="btn btn-gold" onclick="openVarDrawer(null,null)">+ Add Variation</button>
+      </div>
+      <div id="varPage"></div>
+    </div>
+
+    <!-- PRICES -->
+    <div class="page" id="page-prices">
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-title">Elite Gold Buy Prices</div>
+          <div style="font-size:11px;color:var(--muted2)">Sell price = Buy + ₹<span id="marginDisp">250</span> + ₹<span id="deliveryDisp">150</span></div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tbl" id="pricesTbl">
+            <thead><tr>
+              <th>Product</th><th>Type</th>
+              <th>Buy Price (₹)</th>
+              <th>Sell Price</th>
+              <th>Profit</th>
+            </tr></thead>
+            <tbody id="pricesTblBody"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button class="btn btn-gold" onclick="savePrices()">💾 Save Prices</button>
+          <button class="btn btn-outline" onclick="exportData()">📥 Export prices.js</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNERS -->
+    <div class="page" id="page-banners">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Ticker / Announcement Bar</div></div>
+        <div class="form-group">
+          <label>Ticker Text</label>
+          <input type="text" class="inp" id="tickerText" value="🪙 50mg Gold ₹1,364 • 100mg Gold ₹2,174 • 1g Gold ₹16,165 • No Minimum Order • Buyback Guaranteed • Gold SIP from ₹10/day">
+          <div class="inp-hint">Scrolls across the top bar of your website</div>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="save('ticker')">Save Ticker</button>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Hero Section</div></div>
+        <div class="form-row">
+          <div class="form-group"><label>Main Headline</label><input type="text" class="inp" id="heroH1" value="India's Smallest Gold Coins Delivered Fast"></div>
+          <div class="form-group"><label>Sub Headline</label><input type="text" class="inp" id="heroH2" value="From just ₹1,364 — pure 999 Elite Gold coins from 50mg"></div>
+          <div class="form-group"><label>Badge Text</label><input type="text" class="inp" id="heroBadge" value="Elite Gold Certified"></div>
+          <div class="form-group"><label>Button 1 Text</label><input type="text" class="inp" id="heroBtn1" value="🪙 Shop All Coins"></div>
+          <div class="form-group"><label>Button 2 Text</label><input type="text" class="inp" id="heroBtn2" value="💰 Start Gold SIP"></div>
+        </div>
+        <div class="section-lbl" style="margin-top:16px">Hero Stats Bar</div>
+        <div class="form-row-3">
+          <div class="form-group"><label>Stat 1</label><input type="text" class="inp" id="s1n" value="50mg"><input type="text" class="inp" style="margin-top:6px" id="s1l" value="Smallest Coin"></div>
+          <div class="form-group"><label>Stat 2</label><input type="text" class="inp" id="s2n" value="₹250"><input type="text" class="inp" style="margin-top:6px" id="s2l" value="Fixed Margin"></div>
+          <div class="form-group"><label>Stat 3</label><input type="text" class="inp" id="s3n" value="₹150"><input type="text" class="inp" style="margin-top:6px" id="s3l" value="Fixed Delivery"></div>
+        </div>
+        <button class="btn btn-gold btn-sm" style="margin-top:14px" onclick="save('hero')">Save Hero</button>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Features Section</div></div>
+        <div id="featuresList"></div>
+        <button class="btn btn-outline btn-sm" style="margin-top:10px" onclick="addFeature()">+ Add Feature</button>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="page" id="page-reviews">
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-title">Customer Reviews</div>
+          <button class="btn btn-gold btn-sm" onclick="openReviewModal(null)">+ Add Review</button>
+        </div>
+        <div id="reviewsList"></div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="page" id="page-pages">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">About Page</div></div>
+        <div class="form-group"><label>About Title</label><input type="text" class="inp" id="aboutTitle" value="About QCG Gold"></div>
+        <div class="form-group"><label>About Description</label><textarea class="ta" id="aboutDesc">We are a home-based gold coin business from Mumbai. We source directly from Elite Gold and sell to customers across India via Instagram and WhatsApp. Our mission: make gold accessible to every Indian at honest, transparent prices.</textarea></div>
+        <button class="btn btn-gold btn-sm" onclick="save('about')">Save About Page</button>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Contact Information</div></div>
+        <div class="form-row">
+          <div class="form-group"><label>City</label><input type="text" class="inp" id="city" value="Mumbai, India"></div>
+          <div class="form-group"><label>Business Hours</label><input type="text" class="inp" id="hours" value="9 AM – 9 PM Daily"></div>
+          <div class="form-group"><label>Instagram</label><input type="text" class="inp" id="igHandle" placeholder="@qcggold"></div>
+          <div class="form-group"><label>Email</label><input type="text" class="inp" id="email" placeholder="qcggold@gmail.com"></div>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="save('contact')">Save Contact</button>
+      </div>
+    </div>
+
+    <!-- WHATSAPP -->
+    <div class="page" id="page-whatsapp">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">WhatsApp Number</div></div>
+        <div class="form-group">
+          <label>Phone Number (with 91 country code)</label>
+          <input type="text" class="inp" id="waNum" placeholder="919820001234" style="font-size:18px;font-weight:700" oninput="updateWAPreview()">
+          <div class="inp-hint">Enter 91 + your 10 digit number. Example: 919820001234</div>
+        </div>
+        <div style="font-size:22px;font-weight:700;color:var(--green);text-align:center;padding:16px;background:rgba(34,197,94,.08);border-radius:9px;border:1px solid rgba(34,197,94,.2);margin-bottom:14px" id="waDisplay">No number set</div>
+        <div class="section-lbl">Order Message Template</div>
+        <div class="form-group">
+          <label>Auto Message (use [PRODUCT], [QTY], [TOTAL] as placeholders)</label>
+          <textarea class="ta" id="waMsg" style="height:110px">Hi QCG Gold! I want to order:
+• Product: [PRODUCT]
+• Quantity: [QTY] coin(s)
+• Total: [TOTAL]
+Please confirm price and share UPI details!</textarea>
+        </div>
+        <div style="background:var(--dark3);border-radius:9px;padding:14px;margin-bottom:14px">
+          <div style="font-size:10px;color:var(--muted2);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">Preview</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.7;white-space:pre-wrap" id="waPreview"></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-green" style="flex:1;justify-content:center" onclick="saveWA()">💾 Save WhatsApp</button>
+          <button class="btn btn-outline" onclick="testWA()">📱 Test Link</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO -->
+    <div class="page" id="page-seo">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">SEO & Meta Tags</div></div>
+        <div class="form-group"><label>Website Title</label><input type="text" class="inp" id="seoTitle" value="QCG Gold — Pure Gold & Silver Coins | Quick Click Goods"></div>
+        <div class="form-group"><label>Meta Description</label><textarea class="ta" id="seoDesc">India's most affordable gold coins. 50mg to 50g. Elite Gold certified. No minimum order. Gold SIP from ₹10/day. Pan India delivery.</textarea></div>
+        <div class="form-group"><label>Keywords</label><input type="text" class="inp" id="seoKeys" value="gold coins india, buy gold coins online, 1g gold coin, gold gifting, dhanteras gold"></div>
+        <div class="form-row">
+          <div class="form-group"><label>OG Image URL (for WhatsApp preview)</label><input type="text" class="inp" id="ogImg" placeholder="https://..."></div>
+          <div class="form-group"><label>Website URL</label><input type="text" class="inp" id="siteUrl" value="https://ghnework-cloud.github.io/qcggold"></div>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="save('seo')">Save SEO</button>
+      </div>
+    </div>
+
+    <!-- CUSTOM CODE -->
+    <div class="page" id="page-code">
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-title">Custom HTML / CSS / JavaScript</div>
+          <div style="font-size:11px;color:var(--muted2)">Injected into every page</div>
+        </div>
+        <div class="tabs">
+          <button class="tab on" onclick="switchCodeTab('head',this)">Head Code</button>
+          <button class="tab" onclick="switchCodeTab('body',this)">Body Code</button>
+          <button class="tab" onclick="switchCodeTab('css',this)">Custom CSS</button>
+          <button class="tab" onclick="switchCodeTab('js',this)">Custom JS</button>
+        </div>
+        <div id="code-head">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px">Injected inside &lt;head&gt; — good for Google Analytics, Facebook Pixel, meta tags</div>
+          <textarea class="code-editor" id="codeHead" placeholder="<!-- Paste Google Analytics, Facebook Pixel, or any head code here -->
+Example:
+<!-- Google tag (gtag.js) -->
+<script async src='https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX'></script>"></textarea>
+        </div>
+        <div id="code-body" style="display:none">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px">Injected before &lt;/body&gt; — good for chat widgets, analytics scripts</div>
+          <textarea class="code-editor" id="codeBody" placeholder="<!-- Paste chat widget code, tracking scripts, etc here -->"></textarea>
+        </div>
+        <div id="code-css" style="display:none">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px">Custom CSS to override any website styles</div>
+          <textarea class="code-editor" id="codeCss" placeholder="/* Custom CSS */
+.hero-title {
+  font-size: 72px;
+}
+.btn-p {
+  border-radius: 50px;
+}"></textarea>
+        </div>
+        <div id="code-js" style="display:none">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px">Custom JavaScript — runs on every page</div>
+          <textarea class="code-editor" id="codeJs" placeholder="// Custom JavaScript
+// Runs after page loads
+console.log('QCG Gold loaded');"></textarea>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button class="btn btn-gold" onclick="save('code')">💾 Save Code</button>
+          <button class="btn btn-outline" onclick="exportData()">📥 Export to prices.js</button>
+        </div>
+        <div style="margin-top:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px;font-size:11px;color:var(--red)">
+          ⚠️ Custom code runs on your live website. Wrong code can break your site. Always test before saving.
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Business Settings</div></div>
+        <div class="form-row">
+          <div class="form-group"><label>Business Name</label><input type="text" class="inp" id="bizName" value="QCG Gold"></div>
+          <div class="form-group"><label>Tagline</label><input type="text" class="inp" id="bizTagline" value="Click Karo. Sona Pao."></div>
+          <div class="form-group"><label>GST Number</label><input type="text" class="inp" id="gstNum" placeholder="27XXXXX1234X1Z5"></div>
+          <div class="form-group"><label>UPI ID</label><input type="text" class="inp" id="upiId" placeholder="qcggold@paytm"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="section-lbl">Pricing Settings</div>
+        <div class="form-row">
+          <div class="form-group"><label>Your Margin Per Coin (₹)</label><input type="number" class="inp" id="marginSet" value="250" oninput="updatePriceDisp()"><div class="inp-hint">Your profit on every coin sold</div></div>
+          <div class="form-group"><label>Delivery Charge (₹)</label><input type="number" class="inp" id="deliverySet" value="150" oninput="updatePriceDisp()"><div class="inp-hint">Flat delivery fee per order</div></div>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="save('settings')">Save Settings</button>
+      </div>
+
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Danger Zone</div></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="if(confirm('Reset all prices to defaults?'))resetPrices()">↩️ Reset Prices</button>
+          <button class="btn btn-outline btn-sm" onclick="if(confirm('Clear all saved data?')){localStorage.clear();location.reload()}">🗑️ Clear All Data</button>
+          <button class="btn btn-outline btn-sm" onclick="importData()">📤 Import Data</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- PRODUCT DRAWER -->
+<div class="drawer-bg" id="prodDrawer">
+  <div class="drawer">
+    <div class="drawer-hdr">
+      <div class="drawer-title" id="drawerTitle">Add Product</div>
+      <button class="btn-icon" onclick="closeDrawer('prodDrawer')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+
+      <!-- IMAGE UPLOAD -->
+      <div class="section-lbl">Product Images</div>
+      <div class="img-upload-area" id="prodImgDrop">
+        <input type="file" accept="image/*" multiple onchange="handleImgUpload(event,'prodImgs')">
+        <div class="img-upload-icon">🖼️</div>
+        <div class="img-upload-text">Drag images here or click to upload</div>
+        <div class="img-upload-sub">PNG, JPG, WEBP — First image = main image</div>
+      </div>
+      <div class="img-preview-grid" id="prodImgsPrev"></div>
+
+      <div class="divider"></div>
+      <div class="section-lbl">Product Details</div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Product Name *</label><input type="text" class="inp" id="dp-name" placeholder="1g Gold Coin"></div>
+        <div class="form-group"><label>Type *</label>
+          <select class="sel" id="dp-type">
+            <option value="micro">Micro Coin</option>
+            <option value="gold" selected>Gold Coin</option>
+            <option value="premium">Premium Coin</option>
+            <option value="silver">Silver Coin</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Weight / Size</label><input type="text" class="inp" id="dp-weight" placeholder="1g"></div>
+        <div class="form-group"><label>Purity</label><input type="text" class="inp" id="dp-purity" value="999" placeholder="999"></div>
+      </div>
+
+      <div class="form-group"><label>Description</label><textarea class="ta" id="dp-desc" placeholder="Describe this product..."></textarea></div>
+
+      <div class="divider"></div>
+      <div class="section-lbl">Pricing</div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Elite Gold Buy Price (₹) *</label><input type="number" class="inp" id="dp-buy" placeholder="15765" oninput="calcSell()"></div>
+        <div class="form-group"><label>Your Sell Price (Auto)</label><input type="text" class="inp" id="dp-sell" readonly style="color:var(--gold-l);font-weight:700"></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-lbl">Variations</div>
+      <div class="var-list" id="dp-vars-list"></div>
+      <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addVarToProduct()">+ Add Variation</button>
+
+      <div class="divider"></div>
+      <div class="section-lbl">Display Options</div>
+
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Show on Website</div><div class="toggle-sub">Toggle visibility</div></div><label class="toggle"><input type="checkbox" id="dp-visible" checked><span class="tslider"></span></label></div>
+        <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Mark as HOT</div><div class="toggle-sub">Shows HOT badge</div></div><label class="toggle"><input type="checkbox" id="dp-hot"><span class="tslider"></span></label></div>
+        <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Mark as NEW</div><div class="toggle-sub">Shows NEW badge</div></div><label class="toggle"><input type="checkbox" id="dp-new"><span class="tslider"></span></label></div>
+        <div class="toggle-wrap"><div class="toggle-info"><div class="toggle-label">Featured Product</div><div class="toggle-sub">Show in featured section</div></div><label class="toggle"><input type="checkbox" id="dp-featured"><span class="tslider"></span></label></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-lbl">SEO</div>
+      <div class="form-group"><label>SEO Title</label><input type="text" class="inp" id="dp-seo-title" placeholder="Buy 1g Gold Coin Online India"></div>
+      <div class="form-group"><label>SEO Description</label><textarea class="ta" id="dp-seo-desc" placeholder="Buy pure 999 gold coins online in India..."></textarea></div>
+
+    </div>
+    <div class="drawer-footer">
+      <button class="btn btn-outline" onclick="closeDrawer('prodDrawer')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- VARIATION DRAWER -->
+<div class="drawer-bg" id="varDrawer">
+  <div class="drawer">
+    <div class="drawer-hdr">
+      <div class="drawer-title">Add Variation</div>
+      <button class="btn-icon" onclick="closeDrawer('varDrawer')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <div class="section-lbl">Variation Image</div>
+      <div class="img-upload-area">
+        <input type="file" accept="image/*" onchange="handleVarImg(event)">
+        <div class="img-upload-icon">📷</div>
+        <div class="img-upload-text">Upload variation image</div>
+        <div class="img-upload-sub">Separate image for this size/design</div>
+      </div>
+      <div id="varImgPrev" style="margin-top:8px"></div>
+
+      <div class="divider"></div>
+      <div class="form-group"><label>Parent Product</label>
+        <select class="sel" id="var-parent"></select>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Variation Name</label><input type="text" class="inp" id="var-name" placeholder="0.5g Laxmi Design"></div>
+        <div class="form-group"><label>Size / Weight</label><input type="text" class="inp" id="var-size" placeholder="0.5g"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Design / Style</label><input type="text" class="inp" id="var-design" placeholder="Laxmi-Rose-KV"></div>
+        <div class="form-group"><label>Purity</label><input type="text" class="inp" id="var-purity" value="999"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Elite Buy Price (₹)</label><input type="number" class="inp" id="var-buy" oninput="calcVarSell()"></div>
+        <div class="form-group"><label>Sell Price (Auto)</label><input type="text" class="inp" id="var-sell" readonly style="color:var(--gold-l);font-weight:700"></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea class="ta" id="var-desc" placeholder="Describe this variation..."></textarea></div>
+      <div class="toggle-wrap" style="margin-top:10px"><div class="toggle-info"><div class="toggle-label">Active</div><div class="toggle-sub">Show this variation</div></div><label class="toggle"><input type="checkbox" id="var-active" checked><span class="tslider"></span></label></div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn btn-outline" onclick="closeDrawer('varDrawer')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveVariation()">Save Variation</button>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-bg" id="reviewModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+    <div class="modal-title">Customer Review</div>
+    <div class="form-group"><label>Name</label><input type="text" class="inp" id="rev-name" placeholder="Priya Mehta"></div>
+    <div class="form-group"><label>Location</label><input type="text" class="inp" id="rev-loc" placeholder="Mumbai, Maharashtra"></div>
+    <div class="form-group"><label>Rating</label>
+      <select class="sel" id="rev-stars"><option value="5">⭐⭐⭐⭐⭐ 5 Stars</option><option value="4">⭐⭐⭐⭐ 4 Stars</option><option value="3">⭐⭐⭐ 3 Stars</option></select>
+    </div>
+    <div class="form-group"><label>Review Text</label><textarea class="ta" id="rev-text" placeholder="Write review..."></textarea></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button class="btn btn-outline" onclick="closeModal('reviewModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveReview()">Save Review</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg">Saved!</span></div>
+
+<script>
+// ═══════════════════════════ STATE ═══════════════════════════
+const MARGIN = () => parseInt(localStorage.getItem('qcg_margin')||'250');
+const DELIVERY = () => parseInt(localStorage.getItem('qcg_delivery')||'150');
+const fmt = n => '₹'+Math.round(n).toLocaleString('en-IN');
+
+let editingProdId = null;
+let editingVarId = null;
+let tempVars = [];
+let tempVarImg = null;
+
+function LS(k,def=null){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch{return def}}
+function LS_set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+// DEFAULT DATA
+const DEFAULT_PRODUCTS = [
+  {id:'50mg',  name:'50mg Micro Gold',   type:'micro',   weight:'50mg', purity:'999', buy:964,    desc:'India\'s smallest gold coin. Pure 999 gold.',  hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'100mg', name:'100mg Micro Gold',  type:'micro',   weight:'100mg',purity:'999', buy:1774,   desc:'Perfect gifting size. 100mg pure gold.',         hot:true, nw:false,featured:true, visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'200mg', name:'200mg Micro Gold',  type:'micro',   weight:'200mg',purity:'999', buy:3368,   desc:'Premium micro gold coin.',                       hot:false,nw:true, featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'05g',   name:'0.5g Gold Coin',    type:'gold',    weight:'0.5g', purity:'999', buy:7934,   desc:'Investment grade gold coin.',                    hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'1g',    name:'1g Gold Coin',      type:'gold',    weight:'1g',   purity:'999', buy:15765,  desc:'Most popular. Perfect for gifting & investment.',hot:true, nw:false,featured:true, visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'2g',    name:'2g Gold Coin',      type:'gold',    weight:'2g',   purity:'999', buy:32671,  desc:'Premium gifting size.',                          hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'4g',    name:'4g Gold Coin',      type:'gold',    weight:'4g',   purity:'999', buy:65271,  desc:'Wedding special gift.',                          hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'5g',    name:'5g Gold Coin',      type:'gold',    weight:'5g',   purity:'999', buy:81519,  desc:'Family gift.',                                   hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'8g',    name:'8g Gold Coin',      type:'gold',    weight:'8g',   purity:'999', buy:130407, desc:'Shagun gift.',                                   hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'10g',   name:'10g Gold Coin',     type:'gold',    weight:'10g',  purity:'999', buy:162966, desc:'Investment coin.',                               hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'20g',   name:'20g Gold Coin',     type:'gold',    weight:'20g',  purity:'999', buy:325735, desc:'Bulk value.',                                    hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'50g',   name:'50g Gold Coin',     type:'gold',    weight:'50g',  purity:'999', buy:813963, desc:'Maximum value.',                                 hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'05gp',  name:'0.5g Premium Coin', type:'premium', weight:'0.5g', purity:'999', buy:8155,   desc:'Laxmi-Rose-KV Design.',                          hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[{id:'v1',name:'Laxmi Design',size:'0.5g',design:'Laxmi',purity:'999',buy:8155,img:null,active:true,desc:''}],seoT:'',seoD:''},
+  {id:'1gp',   name:'1g Premium Coin',   type:'premium', weight:'1g',   purity:'999', buy:16017,  desc:'Rose-Laxmi-Kalp Design.',                        hot:true, nw:false,featured:true, visible:true,imgs:[],vars:[{id:'v2',name:'Rose Design',size:'1g',design:'Rose',purity:'999',buy:16017,img:null,active:true,desc:''}],seoT:'',seoD:''},
+  {id:'s5g',   name:'5g Silver Coin',    type:'silver',  weight:'5g',   purity:'999', buy:430,    desc:'Pure 999 silver. Gifting.',                      hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'s10g',  name:'10g Silver Coin',   type:'silver',  weight:'10g',  purity:'999', buy:880,    desc:'Best value silver coin.',                        hot:true, nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+  {id:'s50g',  name:'50g Silver Coin',   type:'silver',  weight:'50g',  purity:'999', buy:4350,   desc:'Bulk silver.',                                   hot:false,nw:false,featured:false,visible:true,imgs:[],vars:[],seoT:'',seoD:''},
+];
+
+const DEFAULT_REVIEWS = [
+  {id:'r1',name:'Priya Mehta',  loc:'Mumbai, Maharashtra', stars:5, text:'Ordered 100 coins of 100mg for wedding. Stunning packaging!'},
+  {id:'r2',name:'Ramesh Kumar', loc:'Ahmedabad, Gujarat',  stars:5, text:'First time buying gold online. So easy via WhatsApp. Got GST invoice!'},
+  {id:'r3',name:'Suresh Patel', loc:'Pune, Maharashtra',   stars:5, text:'Gold SIP feature is amazing! Saving ₹500/month.'},
+];
+
+let prods = LS('qcg_prods',null) || DEFAULT_PRODUCTS;
+let revs  = LS('qcg_revs', null) || DEFAULT_REVIEWS;
+
+// ═══════════════════════════ NAVIGATION ═══════════════════════════
+const pageTitles={dashboard:'Dashboard',products:'Products',variations:'Variations',prices:'Prices',banners:'Banners & Content',reviews:'Customer Reviews',pages:'Pages',whatsapp:'WhatsApp Setup',seo:'SEO Settings',code:'Custom Code',settings:'Settings'};
+function go(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  if(btn)btn.classList.add('on');
+  document.getElementById('pageTitle').textContent=pageTitles[id]||id;
+  if(id==='products')renderProducts();
+  if(id==='variations')renderVariations();
+  if(id==='prices')renderPrices();
+  if(id==='reviews')renderReviews();
+  if(id==='dashboard')updateDash();
+  if(id==='whatsapp')loadWA();
+}
+
+// ═══════════════════════════ DASHBOARD ═══════════════════════════
+function updateDash(){
+  const el=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  el('d-prods',prods.length);
+  el('d-vars',prods.reduce((a,p)=>a+(p.vars||[]).length,0));
+  const wa=localStorage.getItem('qcg_wa')||'';
+  el('d-wa',wa?'+'+wa.slice(-10):'Not Set');
+}
+
+// ═══════════════════════════ PRODUCTS ═══════════════════════════
+function renderProducts(){
+  const q=(document.getElementById('prodSearch').value||'').toLowerCase();
+  const f=document.getElementById('prodFilter').value;
+  const grid=document.getElementById('prodGrid');
+  const filtered=prods.filter(p=>{
+    if(f!=='all'&&p.type!==f)return false;
+    if(q&&!p.name.toLowerCase().includes(q))return false;
+    return true;
+  });
+  const typeCls={micro:'badge-micro',gold:'badge-gold',premium:'badge-premium',silver:'badge-silver'};
+  grid.innerHTML=filtered.map(p=>{
+    const sell=p.buy+MARGIN()+DELIVERY();
+    const imgSrc=p.imgs&&p.imgs[0]?`<img src="${p.imgs[0]}" alt="${p.name}">`:
+      `<div class="prod-img-placeholder"><span style="font-size:32px">🪙</span><span>${p.weight||p.name}</span></div>`;
+    return `
+    <div class="prod-card">
+      <div class="prod-img-area" onclick="openProductDrawer('${p.id}')">
+        ${imgSrc}
+        <span class="prod-badge ${typeCls[p.type]||'badge-gold'}">${p.type}</span>
+        <span class="prod-badge-status ${p.visible?'badge-active':'badge-hidden'}">${p.visible?'Live':'Hidden'}</span>
+        ${p.hot?'<span style="position:absolute;bottom:10px;left:10px;background:rgba(239,68,68,.9);color:#fff;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:700">🔥 HOT</span>':''}
+        ${p.nw?'<span style="position:absolute;bottom:10px;left:10px;background:rgba(34,197,94,.9);color:#000;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:700">NEW</span>':''}
+        <div class="prod-img-overlay">
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openProductDrawer('${p.id}')">✏️ Edit</button>
+          <button class="btn btn-red btn-sm" onclick="event.stopPropagation();deleteProd('${p.id}')">🗑️</button>
+        </div>
+      </div>
+      <div class="prod-body">
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-sub">${p.purity} Purity · ${p.weight||''} ${(p.vars||[]).length?'· '+p.vars.length+' variations':''}</div>
+        <div class="prod-price-row">
+          <div><div class="prod-price">${fmt(sell)}</div><div class="prod-buy-price">Buy ${fmt(p.buy)}</div></div>
+          <span class="badge b-green">₹${MARGIN()} profit</span>
+        </div>
+        <div class="prod-actions">
+          <button class="btn btn-gold btn-xs" style="flex:1;justify-content:center" onclick="openProductDrawer('${p.id}')">Edit</button>
+          <button class="btn-icon" onclick="toggleProdVisible('${p.id}')" title="${p.visible?'Hide':'Show'}">
+            ${p.visible?
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>':
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  if(!filtered.length)grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted2);font-size:13px">No products found</div>';
+}
+
+function openProductDrawer(id){
+  editingProdId=id;
+  tempVars=[];
+  const p=id?prods.find(x=>x.id===id):null;
+  document.getElementById('drawerTitle').textContent=p?'Edit Product':'Add Product';
+  // Clear form
+  ['dp-name','dp-weight','dp-purity','dp-desc','dp-seo-title','dp-seo-desc'].forEach(fid=>{
+    document.getElementById(fid).value=p?(p[{
+      'dp-name':'name','dp-weight':'weight','dp-purity':'purity','dp-desc':'desc',
+      'dp-seo-title':'seoT','dp-seo-desc':'seoD'
+    }[fid]]||''):'';
+  });
+  if(document.getElementById('dp-purity').value==='')document.getElementById('dp-purity').value='999';
+  document.getElementById('dp-type').value=p?p.type:'gold';
+  document.getElementById('dp-buy').value=p?p.buy:'';
+  document.getElementById('dp-visible').checked=p?p.visible:true;
+  document.getElementById('dp-hot').checked=p?p.hot:false;
+  document.getElementById('dp-new').checked=p?p.nw:false;
+  document.getElementById('dp-featured').checked=p?p.featured:false;
+  calcSell();
+  // Images
+  document.getElementById('prodImgsPrev').innerHTML='';
+  if(p&&p.imgs&&p.imgs.length){
+    p.imgs.forEach((src,i)=>addImgPreview('prodImgsPrev',src,i));
+  }
+  // Vars
+  tempVars=p?(p.vars||[]).map(v=>({...v})):[];
+  renderTempVars();
+  document.getElementById('prodDrawer').classList.add('open');
+}
+
+function addImgPreview(containerId,src,idx){
+  const cont=document.getElementById(containerId);
+  const div=document.createElement('div');
+  div.className='img-preview-item';
+  div.innerHTML=`<img src="${src}">
+    ${idx===0?'<span class="img-preview-main">Main</span>':''}
+    <button class="img-preview-del" onclick="removeImg('${containerId}',${idx})">×</button>`;
+  cont.appendChild(div);
+}
+
+function handleImgUpload(e,previewId){
+  const files=Array.from(e.target.files);
+  const prev=document.getElementById(previewId+'Prev')||document.getElementById(previewId);
+  files.forEach((file,i)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const src=ev.target.result;
+      const idx=prev.children.length;
+      addImgPreview(prev.id||previewId,src,idx);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleVarImg(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    tempVarImg=ev.target.result;
+    document.getElementById('varImgPrev').innerHTML=`<div style="width:80px;height:80px;border-radius:8px;overflow:hidden"><img src="${tempVarImg}" style="width:100%;height:100%;object-fit:cover"></div>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeImg(containerId,idx){
+  const cont=document.getElementById(containerId+'Prev')||document.getElementById(containerId);
+  if(cont&&cont.children[idx])cont.removeChild(cont.children[idx]);
+}
+
+function calcSell(){
+  const buy=parseInt(document.getElementById('dp-buy').value)||0;
+  const sell=buy+MARGIN()+DELIVERY();
+  document.getElementById('dp-sell').value=buy?fmt(sell):'';
+}
+
+function calcVarSell(){
+  const buy=parseInt(document.getElementById('var-buy').value)||0;
+  const sell=buy+MARGIN()+DELIVERY();
+  document.getElementById('var-sell').value=buy?fmt(sell):'';
+}
+
+function addVarToProduct(){
+  const v={id:'v'+Date.now(),name:'',size:'',design:'',purity:'999',buy:0,img:null,active:true,desc:''};
+  tempVars.push(v);
+  renderTempVars();
+}
+
+function renderTempVars(){
+  const el=document.getElementById('dp-vars-list');
+  el.innerHTML=tempVars.length?tempVars.map((v,i)=>`
+    <div class="var-item">
+      <div class="var-img">${v.img?`<img src="${v.img}">`:'🪙'}</div>
+      <div class="var-info">
+        <input type="text" class="inp" style="margin-bottom:4px" value="${v.name}" placeholder="Variation name" onchange="tempVars[${i}].name=this.value">
+        <input type="number" class="inp" style="font-size:11px" value="${v.buy||''}" placeholder="Buy price" onchange="tempVars[${i}].buy=parseInt(this.value)||0">
+      </div>
+      <div class="var-actions">
+        <button class="btn-icon" onclick="uploadVarImg(${i})">📷</button>
+        <button class="btn-icon" onclick="tempVars.splice(${i},1);renderTempVars()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join(''):'<div style="text-align:center;padding:16px;color:var(--muted2);font-size:12px">No variations. Click + Add Variation.</div>';
+}
+
+function uploadVarImg(idx){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='image/*';
+  inp.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{tempVars[idx].img=ev.target.result;renderTempVars()};
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+function saveProduct(){
+  const name=document.getElementById('dp-name').value.trim();
+  const buy=parseInt(document.getElementById('dp-buy').value)||0;
+  if(!name){toast('Enter product name','error');return}
+  if(!buy){toast('Enter buy price','error');return}
+
+  // Collect images
+  const imgEls=document.querySelectorAll('#prodImgsPrev img');
+  const imgs=Array.from(imgEls).map(el=>el.src);
+
+  const prod={
+    id:editingProdId||'prod_'+Date.now(),
+    name,
+    type:document.getElementById('dp-type').value,
+    weight:document.getElementById('dp-weight').value,
+    purity:document.getElementById('dp-purity').value||'999',
+    buy,
+    desc:document.getElementById('dp-desc').value,
+    visible:document.getElementById('dp-visible').checked,
+    hot:document.getElementById('dp-hot').checked,
+    nw:document.getElementById('dp-new').checked,
+    featured:document.getElementById('dp-featured').checked,
+    imgs,
+    vars:tempVars,
+    seoT:document.getElementById('dp-seo-title').value,
+    seoD:document.getElementById('dp-seo-desc').value,
+  };
+
+  if(editingProdId){
+    const idx=prods.findIndex(p=>p.id===editingProdId);
+    if(idx>-1)prods[idx]=prod;
+  } else {
+    prods.push(prod);
+  }
+  LS_set('qcg_prods',prods);
+  closeDrawer('prodDrawer');
+  renderProducts();
+  updateDash();
+  toast('Product saved!','success');
+}
+
+function deleteProd(id){
+  if(!confirm('Delete this product?'))return;
+  prods=prods.filter(p=>p.id!==id);
+  LS_set('qcg_prods',prods);
+  renderProducts();
+  updateDash();
+  toast('Product deleted');
+}
+
+function toggleProdVisible(id){
+  const p=prods.find(x=>x.id===id);
+  if(p){p.visible=!p.visible;LS_set('qcg_prods',prods);renderProducts();}
+}
+
+// ═══════════════════════════ VARIATIONS PAGE ═══════════════════════════
+function renderVariations(){
+  const el=document.getElementById('varPage');
+  let html='';
+  prods.forEach(p=>{
+    const vars=p.vars||[];
+    html+=`<div class="card">
+      <div class="card-hdr">
+        <div class="card-title">${p.name}</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:11px;color:var(--muted2)">${vars.length} variation${vars.length!==1?'s':''}</span>
+          <button class="btn btn-gold btn-xs" onclick="addVarInline('${p.id}')">+ Add</button>
+        </div>
+      </div>
+      ${vars.length?`<div class="var-list">
+        ${vars.map((v,vi)=>`
+          <div class="var-item">
+            <div class="var-img">${v.img?`<img src="${v.img}">`:'🪙'}</div>
+            <div class="var-info">
+              <div class="var-name">${v.name||'Unnamed'}</div>
+              <div class="var-price">${fmt(v.buy+MARGIN()+DELIVERY())} <span style="color:var(--muted2);font-size:10px">Buy ${fmt(v.buy)}</span></div>
+            </div>
+            <div class="var-actions">
+              <label class="toggle" style="margin-right:4px"><input type="checkbox" ${v.active?'checked':''} onchange="toggleVar('${p.id}',${vi})"><span class="tslider"></span></label>
+              <button class="btn-icon" onclick="editVarInline('${p.id}',${vi})">✏️</button>
+              <button class="btn-icon" onclick="deleteVar('${p.id}',${vi})">🗑️</button>
+            </div>
+          </div>`).join('')}
+      </div>`:'<div style="padding:16px;text-align:center;color:var(--muted2);font-size:12px">No variations. Click + Add.</div>'}
+    </div>`;
+  });
+  el.innerHTML=html||'<div style="text-align:center;padding:40px;color:var(--muted2)">No products found</div>';
+}
+
+function addVarInline(prodId){
+  editingVarId={prodId,varIdx:null};
+  tempVarImg=null;
+  // populate parent select
+  const sel=document.getElementById('var-parent');
+  sel.innerHTML=prods.map(p=>`<option value="${p.id}" ${p.id===prodId?'selected':''}>${p.name}</option>`).join('');
+  ['var-name','var-size','var-design','var-purity','var-desc'].forEach(id=>{
+    document.getElementById(id).value=id==='var-purity'?'999':'';
+  });
+  document.getElementById('var-buy').value='';
+  document.getElementById('var-sell').value='';
+  document.getElementById('var-active').checked=true;
+  document.getElementById('varImgPrev').innerHTML='';
+  tempVarImg=null;
+  document.getElementById('varDrawer').classList.add('open');
+}
+
+function editVarInline(prodId,varIdx){
+  const p=prods.find(x=>x.id===prodId);
+  if(!p)return;
+  const v=p.vars[varIdx];
+  editingVarId={prodId,varIdx};
+  tempVarImg=v.img||null;
+  const sel=document.getElementById('var-parent');
+  sel.innerHTML=prods.map(pr=>`<option value="${pr.id}" ${pr.id===prodId?'selected':''}>${pr.name}</option>`).join('');
+  document.getElementById('var-name').value=v.name||'';
+  document.getElementById('var-size').value=v.size||'';
+  document.getElementById('var-design').value=v.design||'';
+  document.getElementById('var-purity').value=v.purity||'999';
+  document.getElementById('var-buy').value=v.buy||'';
+  document.getElementById('var-active').checked=v.active!==false;
+  document.getElementById('var-desc').value=v.desc||'';
+  document.getElementById('varImgPrev').innerHTML=v.img?`<div style="width:80px;height:80px;border-radius:8px;overflow:hidden"><img src="${v.img}" style="width:100%;height:100%;object-fit:cover"></div>`:'';
+  calcVarSell();
+  document.getElementById('varDrawer').classList.add('open');
+}
+
+function saveVariation(){
+  const prodId=document.getElementById('var-parent').value;
+  const p=prods.find(x=>x.id===prodId);if(!p)return;
+  const name=document.getElementById('var-name').value.trim();
+  if(!name){toast('Enter variation name','error');return}
+  const v={
+    id:editingVarId&&editingVarId.varIdx!==null?(p.vars[editingVarId.varIdx]||{}).id||'v'+Date.now():'v'+Date.now(),
+    name,
+    size:document.getElementById('var-size').value,
+    design:document.getElementById('var-design').value,
+    purity:document.getElementById('var-purity').value||'999',
+    buy:parseInt(document.getElementById('var-buy').value)||0,
+    img:tempVarImg,
+    active:document.getElementById('var-active').checked,
+    desc:document.getElementById('var-desc').value,
+  };
+  if(!p.vars)p.vars=[];
+  if(editingVarId&&editingVarId.varIdx!==null){p.vars[editingVarId.varIdx]=v}
+  else{p.vars.push(v)}
+  LS_set('qcg_prods',prods);
+  closeDrawer('varDrawer');
+  renderVariations();
+  toast('Variation saved!','success');
+}
+
+function openVarDrawer(prodId,varIdx){addVarInline(prodId||prods[0]?.id||'')}
+
+function deleteVar(prodId,varIdx){
+  if(!confirm('Delete variation?'))return;
+  const p=prods.find(x=>x.id===prodId);if(!p)return;
+  p.vars.splice(varIdx,1);
+  LS_set('qcg_prods',prods);
+  renderVariations();
+  toast('Variation deleted');
+}
+
+function toggleVar(prodId,varIdx){
+  const p=prods.find(x=>x.id===prodId);if(!p)return;
+  p.vars[varIdx].active=!p.vars[varIdx].active;
+  LS_set('qcg_prods',prods);
+}
+
+// ═══════════════════════════ PRICES TABLE ═══════════════════════════
+function updatePriceDisp(){
+  document.getElementById('marginDisp').textContent=document.getElementById('marginSet')?.value||'250';
+  document.getElementById('deliveryDisp').textContent=document.getElementById('deliverySet')?.value||'150';
+}
+
+function renderPrices(){
+  const tbody=document.getElementById('pricesTblBody');
+  const typeCls={micro:'b-purple',gold:'b-gold',premium:'b-blue',silver:'badge b-blue'};
+  tbody.innerHTML=prods.map((p,i)=>{
+    const sell=p.buy+MARGIN()+DELIVERY();
+    return `<tr>
+      <td><strong>${p.name}</strong></td>
+      <td><span class="badge ${typeCls[p.type]||'b-gold'}">${p.type}</span></td>
+      <td><input type="number" class="inp" style="width:120px;padding:6px 10px;font-size:12px" value="${p.buy}" onchange="prods[${i}].buy=parseInt(this.value)||0;this.closest('tr').querySelector('.sp').textContent=fmt(prods[${i}].buy+MARGIN()+DELIVERY())" oninput="prods[${i}].buy=parseInt(this.value)||0;this.closest('tr').querySelector('.sp').textContent=fmt(prods[${i}].buy+MARGIN()+DELIVERY())"></td>
+      <td><span class="sp" style="font-size:14px;font-weight:700;color:var(--gold-l)">${fmt(sell)}</span></td>
+      <td><span class="badge b-green">₹${MARGIN()}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function savePrices(){
+  LS_set('qcg_prods',prods);
+  toast('Prices saved!','success');
+}
+
+// ═══════════════════════════ REVIEWS ═══════════════════════════
+function renderReviews(){
+  const el=document.getElementById('reviewsList');
+  el.innerHTML=revs.map((r,i)=>`
+    <div style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#000">${r.name.charAt(0)}</div>
+          <div><div style="font-size:13px;font-weight:600">${r.name}</div><div style="font-size:10px;color:var(--muted2)">${r.loc}</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="badge b-gold">${r.stars}★</span>
+          <button class="btn-icon" onclick="openReviewModal(${i})">✏️</button>
+          <button class="btn-icon" onclick="deleteReview(${i})">🗑️</button>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.7;font-style:italic">"${r.text}"</div>
+    </div>
+  `).join('')||'<div style="text-align:center;padding:32px;color:var(--muted2);font-size:12px">No reviews yet. Click + Add Review.</div>';
+}
+
+let editRevIdx=null;
+function openReviewModal(idx){
+  editRevIdx=idx;
+  const r=idx!==null?revs[idx]:null;
+  document.getElementById('rev-name').value=r?r.name:'';
+  document.getElementById('rev-loc').value=r?r.loc:'';
+  document.getElementById('rev-stars').value=r?r.stars:5;
+  document.getElementById('rev-text').value=r?r.text:'';
+  document.getElementById('reviewModal').classList.add('open');
+}
+
+function saveReview(){
+  const name=document.getElementById('rev-name').value.trim();
+  const text=document.getElementById('rev-text').value.trim();
+  if(!name||!text){toast('Fill name and review','error');return}
+  const r={id:'r'+Date.now(),name,loc:document.getElementById('rev-loc').value,stars:parseInt(document.getElementById('rev-stars').value),text};
+  if(editRevIdx!==null){revs[editRevIdx]=r}else{revs.push(r)}
+  LS_set('qcg_revs',revs);
+  closeModal('reviewModal');
+  renderReviews();
+  toast('Review saved!','success');
+}
+
+function deleteReview(i){
+  if(!confirm('Delete review?'))return;
+  revs.splice(i,1);
+  LS_set('qcg_revs',revs);
+  renderReviews();
+  toast('Review deleted');
+}
+
+// ═══════════════════════════ WHATSAPP ═══════════════════════════
+function loadWA(){
+  const wa=localStorage.getItem('qcg_wa')||'';
+  document.getElementById('waNum').value=wa;
+  updateWAPreview();
+  const msg=localStorage.getItem('qcg_wa_msg')||document.getElementById('waMsg').value;
+  document.getElementById('waMsg').value=msg;
+}
+
+function updateWAPreview(){
+  const num=document.getElementById('waNum').value;
+  document.getElementById('waDisplay').textContent=num?'+'+num:'No number set';
+  const msg=(document.getElementById('waMsg').value||'')
+    .replace('[PRODUCT]','1g Gold Coin')
+    .replace('[QTY]','1')
+    .replace('[TOTAL]','₹16,165');
+  document.getElementById('waPreview').textContent=msg;
+}
+
+function saveWA(){
+  const num=document.getElementById('waNum').value.trim();
+  if(!num){toast('Enter WhatsApp number','error');return}
+  localStorage.setItem('qcg_wa',num);
+  localStorage.setItem('qcg_wa_msg',document.getElementById('waMsg').value);
+  updateDash();
+  toast('WhatsApp saved!','success');
+}
+
+function testWA(){
+  const num=document.getElementById('waNum').value||'919999999999';
+  window.open('https://wa.me/'+num+'?text=Hi+QCG+Gold!+Testing.','_blank');
+}
+
+// ═══════════════════════════ FEATURES ═══════════════════════════
+const defaultFeatures=[
+  {icon:'✅',title:'No Minimum Order',desc:'Buy even 1 coin of 50mg. No MOQ ever.'},
+  {icon:'🔬',title:'Certified Purity',desc:'999 purity. XRF tested before dispatch.'},
+  {icon:'📦',title:'Premium Packaging',desc:'Luxury gift packaging for every order.'},
+  {icon:'💰',title:'Gold SIP',desc:'Save daily from ₹10. Get coins when ready.'},
+  {icon:'🔄',title:'Buyback Guaranteed',desc:'Sell back at live rate minus ₹150.'},
+  {icon:'🧾',title:'GST Invoice',desc:'100% transparent. Invoice on every order.'},
+];
+
+function renderFeatures(){
+  const features=LS('qcg_features',defaultFeatures);
+  const el=document.getElementById('featuresList');
+  el.innerHTML=features.map((f,i)=>`
+    <div style="display:grid;grid-template-columns:60px 1fr 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <input type="text" class="inp" style="font-size:20px;text-align:center" value="${f.icon}" onchange="updateFeature(${i},'icon',this.value)">
+      <input type="text" class="inp" value="${f.title}" placeholder="Title" onchange="updateFeature(${i},'title',this.value)">
+      <input type="text" class="inp" value="${f.desc}" placeholder="Description" onchange="updateFeature(${i},'desc',this.value)">
+      <button class="btn-icon" onclick="deleteFeature(${i})">🗑️</button>
+    </div>
+  `).join('');
+}
+
+function updateFeature(i,key,val){const f=LS('qcg_features',defaultFeatures);f[i][key]=val;LS_set('qcg_features',f)}
+function deleteFeature(i){const f=LS('qcg_features',defaultFeatures);f.splice(i,1);LS_set('qcg_features',f);renderFeatures()}
+function addFeature(){const f=LS('qcg_features',defaultFeatures);f.push({icon:'⭐',title:'New Feature',desc:'Description'});LS_set('qcg_features',f);renderFeatures()}
+
+// ═══════════════════════════ CODE TABS ═══════════════════════════
+function switchCodeTab(id,btn){
+  ['head','body','css','js'].forEach(t=>{
+    const el=document.getElementById('code-'+t);if(el)el.style.display='none';
+  });
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('code-'+id);if(el)el.style.display='block';
+  if(btn)btn.classList.add('on');
+}
+
+// ═══════════════════════════ SAVE FUNCTIONS ═══════════════════════════
+function save(section){
+  const data={};
+  if(section==='ticker'){data.ticker=document.getElementById('tickerText').value}
+  if(section==='hero'){
+    data.heroH1=document.getElementById('heroH1').value;
+    data.heroH2=document.getElementById('heroH2').value;
+    data.heroBadge=document.getElementById('heroBadge').value;
+    data.heroBtn1=document.getElementById('heroBtn1').value;
+    data.heroBtn2=document.getElementById('heroBtn2').value;
+    data.s1n=document.getElementById('s1n').value;
+    data.s1l=document.getElementById('s1l').value;
+    data.s2n=document.getElementById('s2n').value;
+    data.s2l=document.getElementById('s2l').value;
+    data.s3n=document.getElementById('s3n').value;
+    data.s3l=document.getElementById('s3l').value;
+  }
+  if(section==='about'){data.aboutTitle=document.getElementById('aboutTitle').value;data.aboutDesc=document.getElementById('aboutDesc').value}
+  if(section==='contact'){['city','hours','igHandle','email'].forEach(id=>{data[id]=document.getElementById(id).value})}
+  if(section==='seo'){['seoTitle','seoDesc','seoKeys','ogImg','siteUrl'].forEach(id=>{data[id]=document.getElementById(id).value})}
+  if(section==='settings'){
+    const m=parseInt(document.getElementById('marginSet').value)||250;
+    const d=parseInt(document.getElementById('deliverySet').value)||150;
+    localStorage.setItem('qcg_margin',m);
+    localStorage.setItem('qcg_delivery',d);
+    ['bizName','bizTagline','gstNum','upiId'].forEach(id=>{data[id]=document.getElementById(id)?.value||''});
+    updatePriceDisp();
+  }
+  if(section==='code'){
+    data.codeHead=document.getElementById('codeHead').value;
+    data.codeBody=document.getElementById('codeBody').value;
+    data.codeCss=document.getElementById('codeCss').value;
+    data.codeJs=document.getElementById('codeJs').value;
+  }
+  Object.entries(data).forEach(([k,v])=>localStorage.setItem('qcg_'+k,v));
+  toast(section.charAt(0).toUpperCase()+section.slice(1)+' saved!','success');
+}
+
+function saveAll(){
+  LS_set('qcg_prods',prods);
+  LS_set('qcg_revs',revs);
+  toast('All changes saved!','success');
+}
+
+// ═══════════════════════════ EXPORT ═══════════════════════════
+function exportData(){
+  const margin=MARGIN(),delivery=DELIVERY();
+  const wa=localStorage.getItem('qcg_wa')||'919999999999';
+  const ig=localStorage.getItem('qcg_igHandle')||'@qcggold';
+  const biz=localStorage.getItem('qcg_bizName')||'QCG Gold';
+  const ticker=localStorage.getItem('qcg_ticker')||'';
+  const codeHead=localStorage.getItem('qcg_codeHead')||'';
+  const codeBody=localStorage.getItem('qcg_codeBody')||'';
+  const codeCss=localStorage.getItem('qcg_codeCss')||'';
+  const codeJs=localStorage.getItem('qcg_codeJs')||'';
+
+  const content=`/* QCG GOLD — AUTO-GENERATED FROM ADMIN CMS
+   Last updated: ${new Date().toLocaleString('en-IN')}
+   DO NOT EDIT MANUALLY — Use admin.html instead
+*/
+
+const MARGIN=${margin};
+const DELIVERY=${delivery};
+const TOTAL_ADD=MARGIN+DELIVERY;
+const WA_NUMBER='${wa}';
+const IG_HANDLE='${ig}';
+const BIZ_NAME='${biz}';
+const TICKER='${ticker.replace(/'/g,"\\'")}';
+
+const PRODUCTS=${JSON.stringify(prods,null,2)};
+
+const REVIEWS=${JSON.stringify(revs,null,2)};
+
+const FEATURES=${JSON.stringify(LS('qcg_features',defaultFeatures),null,2)};
+
+const CONTENT={
+  heroH1:${JSON.stringify(localStorage.getItem('qcg_heroH1')||"India's Smallest Gold Coins Delivered Fast")},
+  heroH2:${JSON.stringify(localStorage.getItem('qcg_heroH2')||'From just ₹1,364 — pure 999 Elite Gold coins from 50mg')},
+  heroBadge:${JSON.stringify(localStorage.getItem('qcg_heroBadge')||'Elite Gold Certified')},
+  heroBtn1:${JSON.stringify(localStorage.getItem('qcg_heroBtn1')||'🪙 Shop All Coins')},
+  heroBtn2:${JSON.stringify(localStorage.getItem('qcg_heroBtn2')||'💰 Start Gold SIP')},
+  s1n:${JSON.stringify(localStorage.getItem('qcg_s1n')||'50mg')},
+  s1l:${JSON.stringify(localStorage.getItem('qcg_s1l')||'Smallest Coin')},
+  s2n:${JSON.stringify(localStorage.getItem('qcg_s2n')||'₹250')},
+  s2l:${JSON.stringify(localStorage.getItem('qcg_s2l')||'Fixed Margin')},
+  s3n:${JSON.stringify(localStorage.getItem('qcg_s3n')||'₹150')},
+  s3l:${JSON.stringify(localStorage.getItem('qcg_s3l')||'Fixed Delivery')},
+  aboutTitle:${JSON.stringify(localStorage.getItem('qcg_aboutTitle')||'About QCG Gold')},
+  aboutDesc:${JSON.stringify(localStorage.getItem('qcg_aboutDesc')||'')},
+  seoTitle:${JSON.stringify(localStorage.getItem('qcg_seoTitle')||'QCG Gold')},
+  seoDesc:${JSON.stringify(localStorage.getItem('qcg_seoDesc')||'')},
+  seoKeys:${JSON.stringify(localStorage.getItem('qcg_seoKeys')||'')},
+  ogImg:${JSON.stringify(localStorage.getItem('qcg_ogImg')||'')},
+  siteUrl:${JSON.stringify(localStorage.getItem('qcg_siteUrl')||'')},
+};
+
+const CUSTOM_CODE={
+  head:${JSON.stringify(codeHead)},
+  body:${JSON.stringify(codeBody)},
+  css:${JSON.stringify(codeCss)},
+  js:${JSON.stringify(codeJs)},
+};
+
+function getSellPrice(id){const p=PRODUCTS.find(x=>x.id===id);return p?p.buy+TOTAL_ADD:0}
+function getProduct(id){return PRODUCTS.find(x=>x.id===id)}
+function fmt(n){return '₹'+Math.round(n).toLocaleString('en-IN')}
+
+console.log('✅ ${biz} CMS loaded — '+PRODUCTS.length+' products');
+`;
+
+  const blob=new Blob([content],{type:'text/javascript'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='prices.js';a.click();
+  URL.revokeObjectURL(url);
+  toast('📥 prices.js downloaded! Upload to GitHub.','info');
+}
+
+// ═══════════════════════════ IMPORT ═══════════════════════════
+function importData(){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='.json';
+  inp.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const data=JSON.parse(ev.target.result);
+        if(data.prods){prods=data.prods;LS_set('qcg_prods',prods)}
+        if(data.revs){revs=data.revs;LS_set('qcg_revs',revs)}
+        toast('Data imported!','success');
+        updateDash();
+      }catch{toast('Invalid file','error')}
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
+function resetPrices(){
+  prods=DEFAULT_PRODUCTS;
+  LS_set('qcg_prods',prods);
+  renderPrices();
+  toast('Prices reset to defaults');
+}
+
+// ═══════════════════════════ MODALS & DRAWERS ═══════════════════════════
+function closeDrawer(id){document.getElementById(id).classList.remove('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.drawer-bg').forEach(el=>{
+  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open')})
+});
+document.querySelectorAll('.modal-bg').forEach(el=>{
+  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open')})
+});
+
+// ═══════════════════════════ TOAST ═══════════════════════════
+function toast(msg,type='info'){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.className='toast show '+(type==='success'?'t-success':type==='error'?'t-error':'t-info');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ═══════════════════════════ INIT ═══════════════════════════
+updateDash();
+renderFeatures();
+
+// Load saved settings
+['marginSet','deliverySet','bizName','bizTagline','gstNum','upiId','tickerText','heroH1','heroH2','heroBadge','heroBtn1','heroBtn2','s1n','s1l','s2n','s2l','s3n','s3l','aboutTitle','aboutDesc','seoTitle','seoDesc','seoKeys','ogImg','siteUrl','codeHead','codeBody','codeCss','codeJs'].forEach(id=>{
+  const v=localStorage.getItem('qcg_'+id);
+  const el=document.getElementById(id);
+  if(v&&el)el.value=v;
+});
+updatePriceDisp();
+</script>
+</body>
+</html>
